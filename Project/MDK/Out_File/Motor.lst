@@ -1,0 +1,77 @@
+C251 COMPILER V5.60.0,  Motor                                                              12/03/24  21:36:55  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE Motor
+OBJECT MODULE PLACED IN .\Out_File\Motor.obj
+COMPILER INVOKED BY: D:\Keil5\C251\BIN\C251.EXE Motor.c XSMALL INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INCDIR(..\
+                    -..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;..\USE
+                    -R\src;..\..\Libraries\seekfree_components) DEBUG PRINT(.\Out_File\Motor.lst) OBJECT(.\Out_File\Motor.obj) 
+
+stmt  level    source
+
+    1          #include "Motor.h"
+    2          void Motor_init(void)
+    3          {
+    4   1          pwm_init(PWMA_CH1P_P60, 17000,0);           //右轮控速
+    5   1              gpio_mode(Motor_right_gpio,GPO_PP);
+    6   1              MOTOR_RIGHT_GPIO = 1;                                   //赋值为1为正转
+    7   1      
+    8   1              pwm_init(PWMA_CH2N_P63, 17000,0);       //左轮控速  
+    9   1              gpio_mode(Motor_left_gpio,GPO_PP);
+   10   1              MOTOR_LEFT_GPIO = 0;                            //赋值为1为正转(为0 or 1需自测)
+   11   1      }       
+   12          void Motor_Ctrl(void)                           //控制电机正反转
+   13          {
+   14   1              if(LNow[BL1]+LNow[BR1]>300){
+   15   2                 if(PidI_R.last_out>=0)
+   16   2                 {
+   17   3                         MOTOR_RIGHT_GPIO = 1;//右轮正转
+   18   3                         pwm_duty(PWMA_CH1P_P60,PidI_R.last_out);
+   19   3                 }
+   20   2                 else
+   21   2                 {
+   22   3                         MOTOR_RIGHT_GPIO = 0;//右轮反转
+   23   3                         pwm_duty(PWMA_CH1P_P60,(-1)*PidI_R.last_out);
+   24   3                 }
+   25   2                 if(PidI_L.last_out>=0)
+   26   2                 {
+   27   3                         MOTOR_LEFT_GPIO = 1;
+   28   3                         pwm_duty(PWMA_CH2N_P63, PidI_L.last_out);
+   29   3                 }
+   30   2                 else
+   31   2                 {
+   32   3                         MOTOR_LEFT_GPIO = 0;
+   33   3                         pwm_duty(PWMA_CH2N_P63,(-1)*PidI_L.last_out);
+   34   3                 }}
+   35   1              else
+   36   1              {
+   37   2              pwm_duty(PWMA_CH1P_P60,0);
+   38   2              pwm_duty(PWMA_CH2N_P63,0);
+   39   2              }
+   40   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       241     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+C251 COMPILER V5.60.0,  Motor                                                              12/03/24  21:36:55  PAGE 2   
+
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

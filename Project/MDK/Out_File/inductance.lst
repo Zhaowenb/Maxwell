@@ -1,0 +1,303 @@
+C251 COMPILER V5.60.0,  inductance                                                         12/03/24  21:36:55  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
+OBJECT MODULE PLACED IN .\Out_File\inductance.obj
+COMPILER INVOKED BY: D:\Keil5\C251\BIN\C251.EXE inductance.c XSMALL INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INCDI
+                    -R(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;.
+                    -.\USER\src;..\..\Libraries\seekfree_components) DEBUG PRINT(.\Out_File\inductance.lst) OBJECT(.\Out_File\inductance.obj)
+                    - 
+
+stmt  level    source
+
+    1          #include "headfile.h"
+    2          #include <math.h>
+    3          #define ELC_NUM         7               //电感总数
+    4          #define ELC_GROUP   3           //采集组数
+    5          #define ELC_TIME    3                           //每组的采集次数
+    6          #define ELC_NEED    1       //排序完后的所需值
+    7          //采集数据值
+    8          uint16  edata LNow[7];                                                                                                                                                                                                                                                  //原始值滤波后
+    9          uint16  edata LNor[7];                                                                                                                                                                                                                                                          //归一化的数值
+   10          uint16  edata LNowMax[7] = {3740,3740,3740,3740,3740,3740,3740};                                                                                                                                                                                        //重新调整
+   11          uint16  edata LNowMin[7] = {0,0,0,0,0,0,0};                                                                                                                                                                                     //重新调整
+   12          uint16  edata ELC[ELC_GROUP][ELC_TIME][ELC_NUM];                                                                                                                                                //电感采集值
+   13          
+   14          uint8 left_value;
+   15          uint8 right_value;
+   16          int16 ad_sum; 
+   17          int16 ad_diff; 
+   18          int16 deviation; 
+   19          //右加左和:R+L
+   20          uint16  edata ELC_Sum_F00 = 0;
+   21          uint16  edata ELC_Sum_F11 = 0;
+   22          uint16  edata ELC_Sum_F0110 = 0;
+   23          uint16  edata ELC_Sum_FALL = 0;
+   24          
+   25          //右减左差:R-L
+   26          int16   edata ELC_Err_F00 = 0;
+   27          int16   edata ELC_Err_F11 = 0;
+   28          int16   edata ELC_Err_B00 = 0;
+   29          
+   30          //中线偏差
+   31          int16   edata ELC_Center = 0;                                                                                                                                                                                                                           //中线偏差
+   32          int16   edata ELC_CenterLast = 0;                                                                                                                                                                                                                       //上一次中线偏差
+   33          int16   edata ELC_CenterBefore = 0;                                                                                                                                                                                                     //上上次中线偏差
+   34          int16   edata ELC_CenterRepair = 0;                                                                                                                                                                                                     //修正后的中线偏差
+   35          int16   edata ELC_Center_F00 =  0;                                                                                                                                                                                                      //F00偏差
+   36          int16   edata ELC_Center_F11 =  0;                                                                                                                                                                                                              //F11偏差
+   37          //int16 edata ELC_Center_F0110 = 0;                                                                                                                                                                                             //F00和F11偏差
+   38          int16   edata ELC_Center_B00 = 0;                                                                                                                                                                                                       //B00偏差
+   39          
+   40          //标志位
+   41          uint8   ElcProtect_Flag=0;                                                                                                                                                                                                                                              //电感保护标志位：超出跑道自动停止
+   42          uint8   edata ELC_Center_Flag = 0;
+   43          /////*
+   44          ////@brief      电感初始化,获取各电感最大值,并进行归一化零偏值的初始化,并显示在屏幕上,按下中键进行归一化零偏值
+             -的设置,并显示在屏幕上,并保存在EEPROM中.
+   45          ////@param      void
+   46          ////@return     void
+   47          ////@since      v0.1.0
+   48          ////@Sample usage: Inductor_Init();
+   49          ////@note       无
+   50          ////*/
+   51          ////void Inductor_Init(void)
+   52          ////{
+   53          //////  uint8 i = 0;
+   54          //////  vuint8 ClosedLoopMode_Temp = (uint8)CarInfo.ClosedLoopMode;
+   55          //////  CarInfo.ClosedLoopMode = NoLoop;
+C251 COMPILER V5.60.0,  inductance                                                         12/03/24  21:36:55  PAGE 2   
+
+   56          //////  ips114_clear(YELLOW);
+   57          //////  IPS114_PENCOLOR = RED;
+   58          //////  for(i = 0; i < ELC_NUM; i++)
+   59          //////          LNowMax[i] = 0;
+   60          //////  ips114_showstr(0,0,"ELC_NowMax_Initializing...");
+   61          //////  ips114_showstr(0,5,"Press_Center_to_Offset...");
+   62          //////  IPS114_PENCOLOR = BLUE;
+   63          //////  ips114_showstr(0,1,"  FL1   FL0   FC   FR0   FR1  ");
+   64          //////  //获取各电感最大值
+   65          //////  while(KeyLast != onepress)
+   66          //////  {
+   67          //////          //获取各电感最大值
+   68          //////          for(i = 0; i < ELC_NUM; i++)
+   69          //////          {
+   70          //////                  if(LNow[i] > LNowMax[i]){
+   71          //////                          LNowMax[i] = LNow[i];
+   72          //////                          IPS114_PENCOLOR = RED;
+   73          //////                          if(i < 5) ips114_showuint16(i*46,2,LNowMax[i]);
+   74          //////                          else ips114_showuint16(i*92,4,LNowMax[i]);
+   75          //////                  }
+   76          //////                  else {
+   77          //////                          IPS114_PENCOLOR = BLUE;
+   78          //////                          if(i < 5) ips114_showuint16(i*46,2,LNowMax[i]);
+   79          //////                          else ips114_showuint16((i-5)*92,4,LNowMax[i]);
+   80          //////                  }
+   81          //////          }
+   82          //////          //按下中键进行归一化零偏值的设置
+   83          //////          if(KeyCenter == onepress){
+   84          //////                  KeyCenter = nopress;
+   85          //////                  ELC_OffSet_F00 = (LNor[FL0] + LNor[FR0])/2;  
+   86          //////                  ELC_OffSet_F11 = (LNor[FL1] + LNor[FR1])/2;
+   87          //////                  ELC_OffSet_FC = LNor[FC];
+   88          //////                  ELC_OffSet_B00 = (LNor[BL0] + LNor[BR0])/2;
+   89          //////                  ELC_OffSet_BC = LNor[BC];
+   90          //////                  IPS114_PENCOLOR = RED;
+   91          //////                  ips114_showuint8(0  ,7,ELC_OffSet_F00);
+   92          //////                  ips114_showuint8(46 ,7,ELC_OffSet_F11);
+   93          //////                  ips114_showuint8(92 ,7,ELC_OffSet_B00);
+   94          //////                  ips114_showuint8(138,7,ELC_OffSet_FC);
+   95          //////                  ips114_showuint8(184,7,ELC_OffSet_BC);
+   96          //////          }
+   97          //////          //未按下中键,显示归一化零偏值
+   98          //////          else {
+   99          //////                  IPS114_PENCOLOR = BLUE;
+  100          //////                  ips114_showuint8(8  ,7,ELC_OffSet_F00);
+  101          //////                  ips114_showuint8(54 ,7,ELC_OffSet_F11);
+  102          //////                  ips114_showuint8(100 ,7,ELC_OffSet_B00);
+  103          //////                  ips114_showuint8(146,7,ELC_OffSet_FC);
+  104          //////                  ips114_showuint8(190,7,ELC_OffSet_BC);
+  105          //////          }
+  106          //////  }
+  107          //////  //松开按键，清屏
+  108          //////  KeyLast = nopress;
+  109          //////  ips114_clear(YELLOW);
+  110          ////}
+  111          
+  112          /*
+  113          @brief  电感读取,获取电感值,并进行排序,归一化,并计算左右和,左右差,中线偏差,并进行中线偏差的修正,并进行中线
+             -偏差的滤波.
+  114          @param  void
+  115          @return void
+  116          @since  v0.1.0
+  117          @Sample usage: InductorRead();
+  118          @note   无
+  119          */
+  120          void InductorRead(void)
+C251 COMPILER V5.60.0,  inductance                                                         12/03/24  21:36:55  PAGE 3   
+
+  121          {
+  122   1              uint16 L_sum[ELC_NUM] = {0,0,0,0,0,0,0};
+  123   1              uint8 i = 0,j = 0,k = 0;
+  124   1              uint16  L_max = 0,L_max_index = 0,len = 0;
+  125   1              
+  126   1              //获取七路电感值
+  127   1              for(i = 0;i < ELC_GROUP;i ++)
+  128   1              {
+  129   2                      for(j = 0;j < ELC_TIME;j ++)
+  130   2                      {
+  131   3                              //获取七路电感值
+  132   3                              ELC[i][j][0] = adc_once(ADC_BL1,ADC_12BIT);//前排左边首个电感
+  133   3                              ELC[i][j][1] = adc_once(ADC_BL2,ADC_12BIT);//前排左边次个电感
+  134   3                              ELC[i][j][2] = adc_once(ADC_BL3,ADC_12BIT);//前排左边第三个电感
+  135   3                              ELC[i][j][3] = adc_once(ADC_BCTR,ADC_12BIT); //前排中间电感
+  136   3                              ELC[i][j][4] = adc_once(ADC_BR1,ADC_12BIT);//前排右边首个电感
+  137   3                              ELC[i][j][5] = adc_once(ADC_BR2,ADC_12BIT);//前排右边首个电感
+  138   3                              ELC[i][j][6] = adc_once(ADC_BR3,ADC_12BIT);//前排右边第三个电感
+  139   3                      }
+  140   2              }
+  141   1              //冒泡排序 七路电感值
+  142   1              for(i = 0;i < ELC_GROUP;i ++)                                                                                   //所有的组都需要排序
+  143   1              {
+  144   2                      for(k = 0;k < ELC_NUM;k ++)                                                                                     //每个电感号组内排序
+  145   2                      {
+  146   3                              len = ELC_TIME;
+  147   3                              while(len > 1)                                                                                                                          //排序到只剩下一个元素后不再进行排序
+  148   3                              {
+  149   4                                      L_max = 0;
+  150   4                                      L_max_index = 0;
+  151   4                                      for(j = 0;j < len;j ++)
+  152   4                                      {
+  153   5                                              if(ELC[i][j][k] > L_max)
+  154   5                                              {
+  155   6                                                      L_max = ELC[i][j][k];                                                                           //记录最大值
+  156   6                                                      L_max_index = j;                                                                                                //记录最大值下标
+  157   6                                              }
+  158   5                                      }
+  159   4                                      ELC[i][L_max_index][k] = ELC[i][len - 1][k];//交换数据
+  160   4                                      ELC[i][len - 1][k] = L_max;                                                                     //最大值后移
+  161   4                                      len --;
+  162   4                              }
+  163   3                              L_sum[k] += ELC[i][ELC_NEED][k];
+  164   3                      }
+  165   2              }
+  166   1              for(i = 0;i < ELC_NUM;i ++)
+  167   1              {
+  168   2                      LNow[i] = L_sum[i]/ELC_GROUP;
+  169   2              }
+  170   1      }
+  171          
+  172          /*
+  173          @brief  简单归一化
+  174          @param  void
+  175          @return void
+  176          @since  v0.1.0
+  177          @Sample usage: SimpleNorRead();
+  178          @note   输入为0，不会调用中间电感
+  179          */
+  180          void SimpleNorRead(void)
+  181          {
+  182   1              uint8 i=0;
+  183   1              for(i=0;i<ELC_NUM;i++)
+  184   1              {
+  185   2                      LNor[i] = (uint16)(((float)(LNow[i]-LNowMin[i] )* 100.0f)/(float)(LNowMax[i]-LNowMin[i]));
+  186   2              }
+C251 COMPILER V5.60.0,  inductance                                                         12/03/24  21:36:55  PAGE 4   
+
+  187   1      }
+  188          
+  189          
+  190          ///*
+  191          //@brief        中线计算,中线计算的方法有两种,一种是F00和B00相同,F11和B00相反,一种是F00和B00相反,F11和B00相同,中
+             -线计算的方法有两种,一种是F00和B00相同,F11和B00相反,一种是F00和B00相反,F11和B00相同
+  192          //@param        void
+  193          //@return       void
+  194          //@since        v0.1.0
+  195          //@Sample usage: CenterCalculate();
+  196          //@note 无
+  197          //*/
+  198          //void CenterCalculate(void)
+  199          //{
+  200          //      
+  201          //}
+  202          //向量中线判断
+  203          void My_center_mag(uint8 i)
+  204          {
+  205   1      // 计算电感向量值
+  206   1              left_value  = limit_ab(sqrt(LNor[BL1]  * LNor[BL1]  + LNor[BL2] * LNor[BL2] ), 0, 100);
+  207   1              right_value = limit_ab(sqrt(LNor[BR1]* LNor[BR1] + LNor[BR2] * LNor[BR2]), 0, 100);
+  208   1              // 计算电感之和 
+  209   1              ad_sum= left_value + right_value;         
+  210   1              // 计算电感之差
+  211   1        ad_diff= (int16) left_value - right_value; 
+  212   1              if(ad_sum>20)                                           // 边界保护 
+  213   1              { 
+  214   2                      ElcProtect_Flag = 'T';
+  215   2                      if(i)
+  216   2      // 方法一 
+  217   2                              {
+  218   3                                      deviation = (ad_diff * 100) / (ad_sum + 1);             // 计算差比和数值 并放大一百倍 
+  219   3                              }
+  220   2      // 方法二 
+  221   2                      else deviation = (ad_diff << 7 ) / (ad_sum + 1);        // 计算差比和数值 并放大128倍 
+  222   2              } 
+  223   1              else
+  224   1              {
+  225   2                      ElcProtect_Flag = 'F';  
+  226   2              }
+  227   1      }                     
+  228          //差比和中线判别
+  229          /*
+  230          @brief  中线计算,中线计算的方法有两种,一种是F00和B00相同,F11和B00相反,一种是F00和B00相反,F11和B00相同,中线
+             -计算的方法有两种,一种是F00和B00相同,F11和B00相反,一种是F00和B00相反,F11和B00相同
+  231          @param  void
+  232          @return void
+  233          @since  v0.1.0
+  234          @Sample usage: CenterCalculate();
+  235          @note   无
+  236          */
+  237          //void My_CenterCalculate(void)
+  238          //{
+  239          //      ELC_Sum_F00 = LNor[BR1] + LNor[BL1];                                                    //左右电感和
+  240          //      ELC_Sum_F11 = LNor[BR2] + LNor[BL2];                                                    //中间两电感和
+  241          //      ELC_Sum_F0110 = ELC_Sum_F00 + ELC_Sum_F11;                              //F00和F11电感和
+  242          //      ELC_Sum_FALL = ELC_Sum_F0110 + LNor[BCTR];                                      //F00和F11和FC电感和
+  243          //      //右减左差
+  244          //      ELC_Err_F00 = LNor[BL1] - LNor[BR1];                                                    //左右电感差
+  245          //      ELC_Err_F11 = LNor[BL2] - LNor[BR2];                                                    //中间两电感差
+  246          //      //跑出跑道判断
+  247          //      if(ELC_Sum_FALL <= 30)  ElcProtect_Flag = 'T';          //电感保护标志位，未超出跑道无需在意
+  248          //      else ElcProtect_Flag = 'F';                                                                                             //电感保护标志位，超出跑道自动停止
+  249          //      ELC_Center_F00 = (int16)((float)ELC_Err_F00 * 200.0f/((float)ELC_Sum_F00 + (float)LNor[BCTR]));
+  250          //      ELC_Center_F11 = (int16)((float)ELC_Err_F11 * 200.0f/((float)ELC_Sum_F11 + (float)LNor[BCTR]));       
+C251 COMPILER V5.60.0,  inductance                                                         12/03/24  21:36:55  PAGE 5   
+
+             -           
+  251          
+  252          //}
+  253          
+  254          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =      1490     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =       245     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =       144     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

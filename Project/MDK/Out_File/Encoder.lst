@@ -1,0 +1,49 @@
+C251 COMPILER V5.60.0,  Encoder                                                            12/03/24  21:36:55  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE Encoder
+OBJECT MODULE PLACED IN .\Out_File\Encoder.obj
+COMPILER INVOKED BY: D:\Keil5\C251\BIN\C251.EXE Encoder.c XSMALL INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INCDIR(.
+                    -.\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;..\U
+                    -SER\src;..\..\Libraries\seekfree_components) DEBUG PRINT(.\Out_File\Encoder.lst) OBJECT(.\Out_File\Encoder.obj) 
+
+stmt  level    source
+
+    1          #include "Encoder.h"
+    2          
+    3          void Encoder_init(void)
+    4          {
+    5   1              ctimer_count_init(left_encoder);//×ó±àÂëÆ÷
+    6   1              ctimer_count_init(right_encoder);//ÓÒ±àÂëÆ÷
+    7   1      }
+    8          void Encoder_speed(void)
+    9          {
+   10   1              PidI_L.real = ctimer_count_read(left_encoder);
+   11   1              PidI_R.real = ctimer_count_read(right_encoder);
+   12   1              ctimer_count_clean(left_encoder);
+   13   1              ctimer_count_clean(right_encoder);
+   14   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =        58     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

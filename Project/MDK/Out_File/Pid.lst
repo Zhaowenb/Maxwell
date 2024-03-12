@@ -1,0 +1,104 @@
+C251 COMPILER V5.60.0,  Pid                                                                12/03/24  21:36:55  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE Pid
+OBJECT MODULE PLACED IN .\Out_File\Pid.obj
+COMPILER INVOKED BY: D:\Keil5\C251\BIN\C251.EXE Pid.c XSMALL INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INCDIR(..\..
+                    -\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;..\USER\
+                    -src;..\..\Libraries\seekfree_components) DEBUG PRINT(.\Out_File\Pid.lst) OBJECT(.\Out_File\Pid.obj) 
+
+stmt  level    source
+
+    1          #include "Pid.h"
+    2          
+    3          PID_POS  PidP_Angle;
+    4          PID_POS  Pid_Dir;
+    5          PID_INC  PidI_L;
+    6          PID_INC  PidI_R;
+    7          
+    8          void    PID_ALL_Init(void)
+    9          {
+   10   1              //PID_Pos_Init(&PidP_Angle,0,0,0);
+   11   1              //PID_Pos_Init(&Pid_Dir,0.6,0,0.75);
+   12   1      //      PID_Inc_Init(&Pid_Dir,5,1,5);
+   13   1              PID_Inc_Init(&PidI_L,0.8,0.1,0.1);
+   14   1              PID_Inc_Init(&PidI_R,0.8,0.1,0.1);
+   15   1      }
+   16          
+   17          void    PID_Pos_Init(PID_POS *PID,float p,float i,float d)
+   18          {
+   19   1                      PID->Kp = p;
+   20   1                      PID->Ki = i;
+   21   1                      PID->Kd = d;
+   22   1                      PID->target = 0.0;
+   23   1                      PID->integral = 0.0;
+   24   1                      PID->derivative = 0.0;
+   25   1                      PID->bias = 0.0;
+   26   1                      PID->before_bias = 0.0;
+   27   1                      PID->real = 0.0;
+   28   1                      PID->out = 0.0;
+   29   1      }
+   30          
+   31          void    PID_Inc_Init(PID_INC *PID,float p,float i,float d)
+   32          {
+   33   1                      PID->Kp = p;
+   34   1                      PID->Ki = i;
+   35   1                      PID->Kd = d;
+   36   1                      PID->target = 0.0;
+   37   1                      PID->bias = 0.0;
+   38   1                      PID->before_bias = 0.0;
+   39   1                      PID->before_before_bias = 0.0;
+   40   1                      PID->integral = 0.0;
+   41   1                      PID->derivative = 0.0;
+   42   1                      PID->real = 0.0;
+   43   1                      PID->out = 0.0;
+   44   1                      PID->last_out = 0.0;
+   45   1      }
+   46          
+   47          int16   PID_position(PID_POS *PID,float t)
+   48          {
+   49   1                      PID->target = t;
+   50   1                      PID->bias = PID->target - PID->real;
+   51   1                      PID->integral += PID->bias;
+   52   1                      PID->out = PID->Kp * PID->bias + PID->Ki * PID->integral + PID->Kd *(PID->bias - PID->before_bias);
+   53   1                      PID->before_bias = PID->bias;
+   54   1                      return PID->out; 
+   55   1      }
+   56          
+   57          int16   PID_increase(PID_INC * PID,float t)
+C251 COMPILER V5.60.0,  Pid                                                                12/03/24  21:36:55  PAGE 2   
+
+   58          {
+   59   1                      PID->target = t;
+   60   1                      PID->bias = PID->target - PID->real;
+   61   1                      PID->out = PID->Kp * (PID->bias - PID->before_bias) + PID->Ki * PID->bias + PID->Kd * (PID->bias - 2*PI
+             -D->before_bias + PID->before_before_bias);
+   62   1                      PID->before_before_bias = PID->before_bias; 
+   63   1                      PID->before_bias = PID->bias;
+   64   1                      PID->last_out += PID->out;
+   65   1                      return PID->last_out;
+   66   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =      1176     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =       224     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

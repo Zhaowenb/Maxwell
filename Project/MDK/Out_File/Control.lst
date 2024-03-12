@@ -1,0 +1,139 @@
+C251 COMPILER V5.60.0,  Control                                                            12/03/24  21:36:55  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE Control
+OBJECT MODULE PLACED IN .\Out_File\Control.obj
+COMPILER INVOKED BY: D:\Keil5\C251\BIN\C251.EXE Control.c XSMALL INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INCDIR(.
+                    -.\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;..\U
+                    -SER\src;..\..\Libraries\seekfree_components) DEBUG PRINT(.\Out_File\Control.lst) OBJECT(.\Out_File\Control.obj) 
+
+stmt  level    source
+
+    1          #include "Control.h"
+    2          int out_dw = 0;
+    3          int out_R = 0;
+    4          int out_L = 0;
+    5          int dutyR = 0;
+    6          int dutyL = 0; 
+    7          int B11_sum=0;
+    8          int B11_errRL=0;
+    9          int B11_errLR=0;
+   10          int Dir_out=0;
+   11          int Dir_real;
+   12          void Pid_Ctrl(void)
+   13          {
+   14   1              
+   15   1              Pid_Dir.real = LNow[BL1]-LNow[BR1];
+   16   1              //Dir_real=LNow[BL1]-LNow[BR1];
+   17   1              if(Pid_Dir.real<30) Pid_Dir.real=0;
+   18   1              PID_position(&Pid_Dir,0);
+   19   1              Dir_out=limit(Pid_Dir.out,1500);
+   20   1              PID_increase(&PidI_L,-Dir_real);
+   21   1              PID_increase(&PidI_R,Dir_real);
+   22   1          PidI_L.last_out=limit(PidI_L.last_out,2000)+1000;
+   23   1              PidI_R.last_out=limit(PidI_R.last_out,2000)+1000;       
+   24   1              Motor_Ctrl();
+   25   1      ////    Pid_Dir.real = LNow[BL1]-LNow[BR1];
+   26   1      //////  PID_position(&PidP_Angle,0);
+   27   1      //////  //PID_position(&Pid_Dir,0);
+   28   1      ////    PID_position(&Pid_Dir,0);
+   29   1      //out_dw = dircontrol(LNow[BR1]-LNow[BL1]);
+   30   1      ////    PID_increase(&PidI_L,1300+Pid_Dir.out); 
+   31   1      ////    PID_increase(&PidI_R,1300-Pid_Dir.out);//串级pid
+   32   1      ////    
+   33   1      ////    out_L = PidI_L.last_out - Pid_Dir.out;
+   34   1      ////    out_R = PidI_R.last_out - Pid_Dir.out;
+   35   1      //      PidI_L.last_out = (int16)PID_increase(&PidI_L,myabs(out_dw)); 
+   36   1      //      PidI_R.last_out = (int16)PID_increase(&PidI_R,myabs(out_dw));
+   37   1      //      PidI_L.last_out=limit(PidI_L.last_out,2000);
+   38   1      //      PidI_R.last_out=limit(PidI_R.last_out,2000);       //240306
+   39   1      ////    
+   40   1      ////    PidI_L.last_out=limit(PidI_L.last_out,2000);
+   41   1      ////    PidI_R.last_out=limit(PidI_R.last_out,2000);
+   42   1      
+   43   1      ////    Motor_set_PWM();
+   44   1      ////    if(Pid_Dir.out)
+   45   1      ////    {
+   46   1      ////            Beep_bee();
+   47   1      ////    }
+   48   1      ////    else ;
+   49   1      ////PID_increase(&PidI_L,LNow[BR1]/10); 
+   50   1      ////PID_increase(&PidI_R,LNow[BL1]/10); 
+   51   1      ////B11_sum=LNow[BR1]+LNow[BL1];
+   52   1      ////B11_errRL=LNow[BR1]-LNow[BL1];
+   53   1      ////B11_errLR=LNow[BL1]-LNow[BR1];
+   54   1      ////PidI_L.last_out=(uint32)(B11_errRL*100.0f/B11_sum);
+   55   1      ////PidI_R.last_out=(uint32)(B11_errLR*100.0f/B11_sum);
+   56   1      ////PID_increase(&PidI_L,myabs(Pid_Dir.out)); 
+   57   1      ////PID_increase(&PidI_R,myabs(Pid_Dir.out));//串级pid
+C251 COMPILER V5.60.0,  Control                                                            12/03/24  21:36:55  PAGE 2   
+
+   58   1      ////PidI_L.last_out=limit(PidI_L.last_out,2000);
+   59   1      ////PidI_R.last_out=limit(PidI_R.last_out,2000);
+   60   1      //Motor_Ctrl();
+   61   1      ////Pid_Ctrl2();
+   62   1      
+   63   1      }
+   64          void Pid_Ctrl2(void)
+   65          {
+   66   1              My_center_mag(0);
+   67   1              out_dw = dircontrol(deviation);
+   68   1              out_dw = limit(out_dw,30000);
+   69   1              PID_increase(&PidI_L,+17000+myabs(out_dw));
+   70   1              PID_increase(&PidI_R,17000+myabs(out_dw));
+   71   1              PidI_L.last_out=limit(PidI_L.last_out,2000);
+   72   1              PidI_R.last_out=limit(PidI_R.last_out,2000);
+   73   1      //      PidI_L.last_out=PidI_L.last_out+800;
+   74   1      //      PidI_R.last_out=PidI_R.last_out+800;            
+   75   1              Motor_Ctrl();
+   76   1              out_L = (int16)PID_increase(&PidI_L,out_dw);       
+   77   1              out_R = (int16)PID_increase(&PidI_R,out_dw);
+   78   1              dutyL = out_L - out_dw;
+   79   1              dutyR = out_R + out_dw; 
+   80   1              Motor_set_PWM();
+   81   1      }
+   82          ////=================================================================
+   83          ////方向环，驱动电机实现差速转弯
+   84          ////=================================================================
+   85          float dir_p =150;
+   86          float dir_i = 0;
+   87          float dir_d = 40;
+   88          int output;
+   89          int total_i;
+   90          int last_chazhi;
+   91          int dircontrol(int chazhi)
+   92          {
+   93   1              total_i+=chazhi;
+   94   1              output = (int)(chazhi*dir_p+dir_i*total_i+(chazhi-last_chazhi)*dir_d);
+   95   1              last_chazhi = chazhi;
+   96   1              return output;
+   97   1      }
+   98          void Motor_set_PWM(void)
+   99          {
+  100   1              PidI_R.last_out = dutyR;
+  101   1              PidI_L.last_out = dutyL;
+  102   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       746     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =        40     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =        78     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

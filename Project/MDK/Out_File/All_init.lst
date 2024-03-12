@@ -1,0 +1,58 @@
+C251 COMPILER V5.60.0,  All_init                                                           12/03/24  21:36:54  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE All_init
+OBJECT MODULE PLACED IN .\Out_File\All_init.obj
+COMPILER INVOKED BY: D:\Keil5\C251\BIN\C251.EXE All_init.c XSMALL INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INCDIR(
+                    -..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;..\
+                    -USER\src;..\..\Libraries\seekfree_components) DEBUG PRINT(.\Out_File\All_init.lst) OBJECT(.\Out_File\All_init.obj) 
+
+stmt  level    source
+
+    1          #include "All_init.h"
+    2          
+    3          void All_init(void)
+    4          {       
+    5   1              //DisableGlobalIRQ();
+    6   1              board_init();                   // ³õÊ¼»¯¼Ä´æÆ÷,ÎðÉ¾³ý´Ë¾ä´úÂë¡£
+    7   1              Screen_init();
+    8   1              //wireless_uart_init();
+    9   1              //gyro_init();
+   10   1              //imu_offset();
+   11   1              PID_ALL_Init();   
+   12   1              Motor_init(); 
+   13   1              Beep_init();
+   14   1              Key_init();
+   15   1              Encoder_init();
+   16   1              //imu660ra_init();
+   17   1              Adcs_init();
+   18   1              //EnableGlobalIRQ();
+   19   1              pit_timer_ms(TIM_2,1);//½øÖÐ¶Ï
+   20   1      //      ips114_showstr(0,20,"-LinYuan-");
+   21   1      //      ips114_showstr(0,70,"Initialization Succeeded.");
+   22   1      //      Beep_bee();
+   23   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =        36     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

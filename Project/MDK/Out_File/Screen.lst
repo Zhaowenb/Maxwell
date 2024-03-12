@@ -1,0 +1,287 @@
+C251 COMPILER V5.60.0,  Screen                                                             12/03/24  21:36:55  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE Screen
+OBJECT MODULE PLACED IN .\Out_File\Screen.obj
+COMPILER INVOKED BY: D:\Keil5\C251\BIN\C251.EXE Screen.c XSMALL INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INCDIR(..
+                    -\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;..\US
+                    -ER\src;..\..\Libraries\seekfree_components) DEBUG PRINT(.\Out_File\Screen.lst) OBJECT(.\Out_File\Screen.obj) 
+
+stmt  level    source
+
+    1          #include "Screen.h"
+    2          void Screen_init(void)
+    3          {
+    4   1              ips114_init();
+    5   1              ips114_clear(BLUE);
+    6   1      }
+    7          //=====================================================================================
+    8          //选页面
+    9          void Screen_Choose_Page(void)
+   10          {
+   11   1      //==============================速度环=============================
+   12   1              if(Screen_Page == 1)
+   13   1              {
+   14   2                      ips114_clear(WHITE);
+   15   2                      ips114_showstr(30,0,"P");
+   16   2                      ips114_showstr(30,20,"I");
+   17   2                      ips114_showstr(30,70,"D");
+   18   2                      ips114_showfloat(60,0,PidI_L.Kp,2,3);
+   19   2                      ips114_showfloat(60,20,PidI_L.Ki,2,3);
+   20   2                      ips114_showfloat(60,70,PidI_L.Kd,2,3);//左
+   21   2                      ips114_showfloat(120,0,PidI_R.Kp,2,3);
+   22   2                      ips114_showfloat(120,20,PidI_R.Ki,2,3);
+   23   2                      ips114_showfloat(120,70,PidI_R.Kd,2,3);//右     
+   24   2              }
+   25   1      //==============================角度环=============================
+   26   1              if(Screen_Page == 2)
+   27   1              {
+   28   2                      ips114_clear(YELLOW);
+   29   2                      ips114_showstr(30,0,"P");
+   30   2                      ips114_showstr(30,20,"I");
+   31   2                      ips114_showstr(30,70,"D");
+   32   2                      ips114_showfloat(60,0,PidP_Angle.Kp,2,3);
+   33   2                      ips114_showfloat(60,20,PidP_Angle.Ki,2,3);
+   34   2                      ips114_showfloat(60,70,PidP_Angle.Kd,2,3);
+   35   2              }
+   36   1      }
+   37          //=================================================================
+   38          //选p i d 
+   39          void Screen_Choose_Pid(void)
+   40          {
+   41   1              if(Pid_Choose == 1)
+   42   1              {
+   43   2                      Screen_Choose_Page();
+   44   2                      ips114_showstr(0,0,"->");//p
+   45   2              }
+   46   1              if(Pid_Choose == 2)
+   47   1              {
+   48   2                      Screen_Choose_Page();
+   49   2                      ips114_showstr(0,20,"->");//i
+   50   2              }
+   51   1              if(Pid_Choose == 3)
+   52   1              {
+   53   2                      Screen_Choose_Page();
+   54   2                      ips114_showstr(0,70,"->");//d
+   55   2              }
+   56   1      }
+   57          //=================================================================================
+C251 COMPILER V5.60.0,  Screen                                                             12/03/24  21:36:55  PAGE 2   
+
+   58          //自增0.1====================================================
+   59          void Screen_Pid_MAXIncrease(void)
+   60          {
+   61   1              if(Screen_Page == 1) //速度环
+   62   1              {
+   63   2                      if(Pid_Choose == 1)
+   64   2                      {
+   65   3                              PidI_L.Kp+=0.1;
+   66   3                              PidI_R.Kp+=0.1;
+   67   3                              ips114_showfloat(60,0,PidI_L.Kp,2,3);
+   68   3                              ips114_showfloat(120,0,PidI_R.Kp,2,3);
+   69   3                      }
+   70   2                      if(Pid_Choose == 2)
+   71   2                      {
+   72   3                              PidI_L.Ki+=0.1;
+   73   3                              PidI_R.Ki+=0.1;
+   74   3                              ips114_showfloat(60,20,PidI_L.Ki,2,3);
+   75   3                              ips114_showfloat(120,20,PidI_R.Ki,2,3);
+   76   3                      }
+   77   2                      if(Pid_Choose == 3)
+   78   2                      {
+   79   3                              PidI_L.Kd+=0.1;
+   80   3                              PidI_R.Kd+=0.1;
+   81   3                              ips114_showfloat(60,70,PidI_L.Kd,2,3);//左
+   82   3                              ips114_showfloat(120,70,PidI_R.Kd,2,3);//右    
+   83   3                      }       
+   84   2              }
+   85   1              if(Screen_Page == 2)//角度环
+   86   1              {
+   87   2                      if(Pid_Choose == 1)
+   88   2                      {
+   89   3                              PidP_Angle.Kp+=0.1;
+   90   3                              ips114_showfloat(60,0,PidP_Angle.Kp,2,3);
+   91   3                      }
+   92   2                      if(Pid_Choose == 2)
+   93   2                      {
+   94   3                              PidP_Angle.Ki+=0.1;
+   95   3                              ips114_showfloat(60,20,PidP_Angle.Ki,2,3);
+   96   3                      }
+   97   2                      if(Pid_Choose == 3)
+   98   2                      {
+   99   3                              PidP_Angle.Kd+=0.1;
+  100   3                              ips114_showfloat(60,70,PidP_Angle.Kd,2,3);
+  101   3                      }
+  102   2              }
+  103   1      }
+  104          //================================================================================
+  105          //自减0.1========================================================
+  106          void Screen_Pid_MAXDecrease(void)
+  107          {
+  108   1              if(Screen_Page == 1) //速度环
+  109   1              {
+  110   2                      if(Pid_Choose == 1)
+  111   2                      {
+  112   3                              PidI_L.Kp-=0.1;
+  113   3                              PidI_R.Kp-=0.1;
+  114   3                              ips114_showfloat(60,0,PidI_L.Kp,2,3);
+  115   3                              ips114_showfloat(120,0,PidI_R.Kp,2,3);
+  116   3                      }
+  117   2                      if(Pid_Choose == 2)
+  118   2                      {
+  119   3                              PidI_L.Ki-=0.1;
+  120   3                              PidI_R.Ki-=0.1;
+  121   3                              ips114_showfloat(60,20,PidI_L.Ki,2,3);
+  122   3                              ips114_showfloat(120,20,PidI_R.Ki,2,3);
+  123   3                      }
+C251 COMPILER V5.60.0,  Screen                                                             12/03/24  21:36:55  PAGE 3   
+
+  124   2                      if(Pid_Choose == 3)
+  125   2                      {
+  126   3                              PidI_L.Kd-=0.1;
+  127   3                              PidI_R.Kd-=0.1;
+  128   3                              ips114_showfloat(60,70,PidI_L.Kd,2,3);//左
+  129   3                              ips114_showfloat(120,70,PidI_R.Kd,2,3);//右    
+  130   3                      }       
+  131   2              }
+  132   1              if(Screen_Page == 2)//角度环
+  133   1              {
+  134   2                      if(Pid_Choose == 1)
+  135   2                      {
+  136   3                              PidP_Angle.Kp-=0.1;
+  137   3                              ips114_showfloat(60,0,PidP_Angle.Kp,2,3);
+  138   3                      }
+  139   2                      if(Pid_Choose == 2)
+  140   2                      {
+  141   3                              PidP_Angle.Ki-=0.1;
+  142   3                              ips114_showfloat(60,20,PidP_Angle.Ki,2,3);
+  143   3                      }
+  144   2                      if(Pid_Choose == 3)
+  145   2                      {
+  146   3                              PidP_Angle.Kd-=0.1;
+  147   3                              ips114_showfloat(60,70,PidP_Angle.Kd,2,3);
+  148   3                      }
+  149   2              }
+  150   1      }
+  151          //==============================================================================
+  152          //自增0.01===========================================================
+  153          void Screen_Pid_MINIncrease(void)
+  154          {
+  155   1              if(Screen_Page == 1) //速度环
+  156   1              {
+  157   2                      if(Pid_Choose == 1)
+  158   2                      {
+  159   3                              PidI_L.Kp+=0.01;
+  160   3                              PidI_R.Kp+=0.01;
+  161   3                              ips114_showfloat(60,0,PidI_L.Kp,2,3);
+  162   3                              ips114_showfloat(120,0,PidI_R.Kp,2,3);
+  163   3                      }
+  164   2                      if(Pid_Choose == 2)
+  165   2                      {
+  166   3                              PidI_L.Ki+=0.01;
+  167   3                              PidI_R.Ki+=0.01;
+  168   3                              ips114_showfloat(60,20,PidI_L.Ki,2,3);
+  169   3                              ips114_showfloat(120,20,PidI_R.Ki,2,3);
+  170   3                      }
+  171   2                      if(Pid_Choose == 3)
+  172   2                      {
+  173   3                              PidI_L.Kd+=0.01;
+  174   3                              PidI_R.Kd+=0.01;
+  175   3                              ips114_showfloat(60,70,PidI_L.Kd,2,3);//左
+  176   3                              ips114_showfloat(120,70,PidI_R.Kd,2,3);//右
+  177   3                      }       
+  178   2              }
+  179   1              if(Screen_Page == 2)//角度环
+  180   1              {
+  181   2                      if(Pid_Choose == 1)
+  182   2                      {
+  183   3                              PidP_Angle.Kp+=0.01;
+  184   3                              ips114_showfloat(60,0,PidP_Angle.Kp,2,3);
+  185   3                      }
+  186   2                      if(Pid_Choose == 2)
+  187   2                      {
+  188   3                              PidP_Angle.Ki+=0.01;
+  189   3                              ips114_showfloat(60,20,PidP_Angle.Ki,2,3);
+C251 COMPILER V5.60.0,  Screen                                                             12/03/24  21:36:55  PAGE 4   
+
+  190   3                      }
+  191   2                      if(Pid_Choose == 3)
+  192   2                      {
+  193   3                              PidP_Angle.Kd+=0.01;
+  194   3                              ips114_showfloat(60,70,PidP_Angle.Kd,2,3);
+  195   3                      }
+  196   2              }
+  197   1      }
+  198          //==============================================================================
+  199          //自减0.01==================================================
+  200          void Screen_Pid_MINDecrease(void)
+  201          {
+  202   1              if(Screen_Page == 1) //速度环
+  203   1              {
+  204   2                      if(Pid_Choose == 1)
+  205   2                      {
+  206   3                              PidI_L.Kp-=0.01;
+  207   3                              PidI_R.Kp-=0.01;
+  208   3                              ips114_showfloat(60,0,PidI_L.Kp,2,3);
+  209   3                              ips114_showfloat(120,0,PidI_R.Kp,2,3);
+  210   3                      }
+  211   2                      if(Pid_Choose == 2)
+  212   2                      {
+  213   3                              PidI_L.Ki-=0.01;
+  214   3                              PidI_R.Ki-=0.01;
+  215   3                              ips114_showfloat(60,20,PidI_L.Ki,2,3);
+  216   3                              ips114_showfloat(120,20,PidI_R.Ki,2,3);
+  217   3                      }
+  218   2                      if(Pid_Choose == 3)
+  219   2                      {
+  220   3                              PidI_L.Kd-=0.01;
+  221   3                              PidI_R.Kd-=0.01;
+  222   3                              ips114_showfloat(60,70,PidI_L.Kd,2,3);//左
+  223   3                              ips114_showfloat(120,70,PidI_R.Kd,2,3);//右    
+  224   3                      }       
+  225   2              }
+  226   1              if(Screen_Page == 2)//角度环
+  227   1              {
+  228   2                      if(Pid_Choose == 1)
+  229   2                      {
+  230   3                              PidP_Angle.Kp-=0.01;
+  231   3                              ips114_showfloat(60,0,PidP_Angle.Kp,2,3);
+  232   3                      }
+  233   2                      if(Pid_Choose == 2)
+  234   2                      {
+  235   3                              PidP_Angle.Ki-=0.01;
+  236   3                              ips114_showfloat(60,20,PidP_Angle.Ki,2,3);
+  237   3                      }
+  238   2                      if(Pid_Choose == 3)
+  239   2                      {
+  240   3                              PidP_Angle.Kd-=0.01;
+  241   3                              ips114_showfloat(60,70,PidP_Angle.Kd,2,3);
+  242   3                      }
+  243   2              }
+  244   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =      2288     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+C251 COMPILER V5.60.0,  Screen                                                             12/03/24  21:36:55  PAGE 5   
+
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =         9     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
