@@ -9,6 +9,20 @@ int B11_errRL=0;
 int B11_errLR=0;
 int Dir_out=0;
 int Dir_real;
+
+int16   SpeedOut_L =  0;
+int16   SpeedOut_R =  0;
+
+void PidSpeed_Ctrl(void)
+{
+	Encoder_speed();
+	SpeedOut_L = (float)PID_increase(&PidI_L,2000);
+	SpeedOut_R = (float)PID_increase(&PidI_R,2000);
+//	PidI_L.last_out = SpeedOut_L;
+//	PidI_R.last_out = SpeedOut_R;
+	Motor_Ctrl();
+	//Beep_bee();
+}
 void Pid_Ctrl(void)
 {
 	
@@ -65,11 +79,11 @@ void Pid_Ctrl2(void)
 {
 	My_center_mag(0);
 	out_dw = dircontrol(deviation);
-	out_dw = limit(out_dw,30000);
-	PID_increase(&PidI_L,+17000+myabs(out_dw));
-	PID_increase(&PidI_R,17000+myabs(out_dw));
-	PidI_L.last_out=limit(PidI_L.last_out,2000);
-	PidI_R.last_out=limit(PidI_R.last_out,2000);
+	//out_dw = limit(out_dw,30000);
+	PID_increase(&PidI_L,+myabs(out_dw));
+	PID_increase(&PidI_R,myabs(out_dw));
+	PidI_L.last_out=limit(PidI_L.last_out,2000)+800;
+	PidI_R.last_out=limit(PidI_R.last_out,2000)+800;
 //	PidI_L.last_out=PidI_L.last_out+800;
 //	PidI_R.last_out=PidI_R.last_out+800;		
 	Motor_Ctrl();
@@ -84,7 +98,7 @@ void Pid_Ctrl2(void)
 ////=================================================================
 float dir_p =150;
 float dir_i = 0;
-float dir_d = 40;
+float dir_d = 20;
 int output;
 int total_i;
 int last_chazhi;

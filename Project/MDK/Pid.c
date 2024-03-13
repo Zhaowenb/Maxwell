@@ -10,8 +10,8 @@ void	PID_ALL_Init(void)
 	//PID_Pos_Init(&PidP_Angle,0,0,0);
 	//PID_Pos_Init(&Pid_Dir,0.6,0,0.75);
 //	PID_Inc_Init(&Pid_Dir,5,1,5);
-	PID_Inc_Init(&PidI_L,0.8,0.1,0.1);
-	PID_Inc_Init(&PidI_R,0.8,0.1,0.1);
+	PID_Inc_Init(&PidI_L,1,0,0);
+	PID_Inc_Init(&PidI_R,1,0,0);
 }
 
 void 	PID_Pos_Init(PID_POS *PID,float p,float i,float d)

@@ -11,7 +11,8 @@ void Motor_init(void)
 }	
 void Motor_Ctrl(void)               		//控制电机正反转
 {
-	if(LNow[BL1]+LNow[BR1]>300){
+//	if(LNow[BL1]+LNow[BR1]>-1)
+//	{
 	   if(PidI_R.last_out>=0)
 	   {
 		   MOTOR_RIGHT_GPIO = 1;//右轮正转
@@ -31,10 +32,11 @@ void Motor_Ctrl(void)               		//控制电机正反转
 	   {
 		   MOTOR_LEFT_GPIO = 0;
 		   pwm_duty(PWMA_CH2N_P63,(-1)*PidI_L.last_out);
-	   }}
-	else
-	{
-	pwm_duty(PWMA_CH1P_P60,0);
-	pwm_duty(PWMA_CH2N_P63,0);
-	}
+	   }
+//	}
+//	else
+//	{
+//	pwm_duty(PWMA_CH1P_P60,0);
+//	pwm_duty(PWMA_CH2N_P63,0);
+//	}
 }

@@ -714,6 +714,11 @@
               <FileType>1</FileType>
               <FilePath>.\Control.c</FilePath>
             </File>
+            <File>
+              <FileName>vofa.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\vofa.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -773,6 +778,11 @@
               <FileName>inductance.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\inductance.h</FilePath>
+            </File>
+            <File>
+              <FileName>vofa.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\vofa.h</FilePath>
             </File>
           </Files>
         </Group>

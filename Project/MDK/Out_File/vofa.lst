@@ -1,0 +1,62 @@
+C251 COMPILER V5.60.0,  vofa                                                               13/03/24  22:12:29  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE vofa
+OBJECT MODULE PLACED IN .\Out_File\vofa.obj
+COMPILER INVOKED BY: D:\Keil5\C251\BIN\C251.EXE vofa.c XSMALL INTR2 WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE INCDIR(..\.
+                    -.\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;..\USER
+                    -\src;..\..\Libraries\seekfree_components) DEBUG PRINT(.\Out_File\vofa.lst) OBJECT(.\Out_File\vofa.obj) 
+
+stmt  level    source
+
+    1          #include "vofa.h"
+    2          union
+    3          {
+    4              unsigned char a[4];   //在单片机中浮点存储为大端模式，高字节在低位，低字节在高位。
+    5              float b;
+    6          
+    7          } temp;
+    8          unsigned char tail[4] = {0x00, 0x00, 0x80, 0x7f};   //结尾
+    9          //int16 duty = 2000;
+   10          //=============================自定义函数区间===================================
+   11          void showData(float dat)         //vofa打印数据用这个
+   12          {
+   13   1          int i;
+   14   1          temp.b = dat;
+   15   1          for( i = 3; i >= 0; i-- )          //发送浮点数 小端模式发送
+   16   1              //wireless_uart_send_char(temp.a[i]);
+   17   1                      uart_putchar(DEBUG_UART,temp.a[i]);
+   18   1      }
+   19          //-----------------------------------------------------------------------------------
+   20          //发送结尾协议-------------------------------------------------------------
+   21          void showTail(void)
+   22          {
+   23   1          int i;
+   24   1          for( i = 0; i < 4; i++ )            //发送结尾
+   25   1              //wireless_uart_send_char(tail[i]);
+   26   1              uart_putchar(DEBUG_UART,tail[i]);
+   27   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       114     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =        16     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =         8     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

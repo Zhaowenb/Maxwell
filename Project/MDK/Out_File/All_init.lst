@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  All_init                                                           12/03/24  21:36:54  PAGE 1   
+C251 COMPILER V5.60.0,  All_init                                                           13/03/24  22:48:53  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE All_init
@@ -13,30 +13,34 @@ stmt  level    source
     2          
     3          void All_init(void)
     4          {       
-    5   1              //DisableGlobalIRQ();
+    5   1              DisableGlobalIRQ();
     6   1              board_init();                   // 初始化寄存器,勿删除此句代码。
-    7   1              Screen_init();
-    8   1              //wireless_uart_init();
-    9   1              //gyro_init();
-   10   1              //imu_offset();
-   11   1              PID_ALL_Init();   
-   12   1              Motor_init(); 
-   13   1              Beep_init();
-   14   1              Key_init();
-   15   1              Encoder_init();
-   16   1              //imu660ra_init();
-   17   1              Adcs_init();
-   18   1              //EnableGlobalIRQ();
-   19   1              pit_timer_ms(TIM_2,1);//进中断
-   20   1      //      ips114_showstr(0,20,"-LinYuan-");
-   21   1      //      ips114_showstr(0,70,"Initialization Succeeded.");
-   22   1      //      Beep_bee();
-   23   1      }
+    7   1                      EnableGlobalIRQ();
+    8   1              Screen_init();
+    9   1              //wireless_uart_init();
+   10   1              //gyro_init();
+   11   1              //imu_offset();
+   12   1      
+   13   1              uart_init(UART_3,UART3_RX_P50, UART3_TX_P51,115200,TIM_3);//打开有线串口
+   14   1              PID_ALL_Init();   
+   15   1              Motor_init(); 
+   16   1              //Beep_init();
+   17   1              //Key_init();
+   18   1              Encoder_init();
+   19   1              //imu660ra_init();
+   20   1              //Adcs_init();
+   21   1              
+   22   1              
+   23   1              pit_timer_ms(TIM_2,1);//进中断
+   24   1      //      ips114_showstr(0,20,"-LinYuan-");
+   25   1      //      ips114_showstr(0,70,"Initialization Succeeded.");
+   26   1      //      Beep_bee();
+   27   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =        36     ------
+  code size            =        64     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

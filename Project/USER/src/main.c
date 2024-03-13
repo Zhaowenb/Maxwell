@@ -37,8 +37,8 @@ void main()
     while(1)
 	{
 		 // 此处编写需要循环执行的代码
-		Key_Scan();
-		Key_Screen();
+//		Key_Scan();
+//		Key_Screen();
 		//InductorRead();
 //		InductorRead();
 //		SimpleNorRead();
@@ -49,8 +49,9 @@ void main()
 //			Beep_bee();
 //		}
 		//ips114_clear(YELLOW);
-	ips114_showfloat(0,0,PidI_L.last_out,5,0);
-	ips114_showfloat(50,0,PidI_R.last_out,5,0);
+		
+//	ips114_showfloat(0,0,PidI_L.last_out,5,0);
+//	ips114_showfloat(50,0,PidI_R.last_out,5,0);
 		
 //		ips114_showfloat(0,20,LNow[1],5,0);//左2电感
 //		ips114_showfloat(50,20,LNow[2],5,0);
@@ -58,11 +59,16 @@ void main()
 //		ips114_showfloat(0,70,LNow[4],5,0);//右1电感
 //		ips114_showfloat(50,70,LNow[5],5,0);//右2电感
 //		ips114_showfloat(140,70,LNow[6],5,0);
-		
-		ips114_showfloat(100,0,left_value,5,0);
-		ips114_showfloat(140,0,right_value,5,0);
-		
-//		ips114_showfloat(0,0,LNor[BCTR],5,0);
+
+//		PidSpeed_Ctrl();
+//		showData(PidI_L.last_out);
+//		showData(PidI_R.last_out);
+//		showTail();
+//		
+//		ips114_showfloat(100,0,left_value,5,0);
+//		ips114_showfloat(140,0,right_value,5,0);
+//		
+		ips114_showfloat(0,0,LNor[BCTR],5,0);
 		ips114_showfloat(0,20,LNor[BL1],5,0);//左2电感
 		ips114_showfloat(50,20,LNor[BL2],5,0);
 		ips114_showfloat(140,20,LNor[BL3],5,0);//中间电感

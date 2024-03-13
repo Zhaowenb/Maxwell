@@ -60,6 +60,7 @@
 #include "Adc.h"
 #include "Control.h"
 #include "inductance.h"
+#include "vofa.h"
 //------逐飞科技产品组件层文件
 #include "seekfree_assistant.h"
 

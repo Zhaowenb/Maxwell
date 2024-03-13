@@ -39,6 +39,7 @@
 ".\Out_File\Beep.obj",
 ".\Out_File\inductance.obj",
 ".\Out_File\Control.obj",
+".\Out_File\vofa.obj",
 ".\Out_File\seekfree_assistant.obj",
 ".\Out_File\seekfree_assistant_inface.obj" 
 TO ".\Out_File\SEEKFREE" 

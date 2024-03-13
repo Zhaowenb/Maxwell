@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  seekfree_assistant                                                 12/03/24  21:36:55  PAGE 1   
+C251 COMPILER V5.60.0,  seekfree_assistant                                                 13/03/24  22:12:29  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE seekfree_assistant
@@ -66,7 +66,7 @@ stmt  level    source
    47   1      }
    48          
    49          
-C251 COMPILER V5.60.0,  seekfree_assistant                                                 12/03/24  21:36:55  PAGE 2   
+C251 COMPILER V5.60.0,  seekfree_assistant                                                 13/03/24  22:12:29  PAGE 2   
 
    50          //-------------------------------------------------------------------------------------------------------
              -------------
@@ -134,7 +134,7 @@ stmt  level    source
   107   1      
   108   1              uint32 i = 0;
   109   1          // 尝试读取数据, 如果不是自定义的传输方式则从接收回调中读取数据
-C251 COMPILER V5.60.0,  seekfree_assistant                                                 12/03/24  21:36:55  PAGE 3   
+C251 COMPILER V5.60.0,  seekfree_assistant                                                 13/03/24  22:12:29  PAGE 3   
 
   110   1          read_length = seekfree_assistant_receive((uint8 *)temp_buffer, SEEKFREE_ASSISTANT_BUFFER_SIZE);
   111   1          if(read_length)
@@ -202,7 +202,7 @@ stmt  level    source
              -FFER_SIZE);
   165   1      }
   166          
-C251 COMPILER V5.60.0,  seekfree_assistant                                                 12/03/24  21:36:55  PAGE 4   
+C251 COMPILER V5.60.0,  seekfree_assistant                                                 13/03/24  22:12:29  PAGE 4   
 
   167          
 
