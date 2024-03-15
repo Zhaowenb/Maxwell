@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  Control                                                            13/03/24  22:43:59  PAGE 1   
+C251 COMPILER V5.60.0,  Control                                                            15/03/24  17:56:26  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE Control
@@ -27,116 +27,135 @@ stmt  level    source
    16          void PidSpeed_Ctrl(void)
    17          {
    18   1              Encoder_speed();
-   19   1              SpeedOut_L = (float)PID_increase(&PidI_L,2000);
-   20   1              SpeedOut_R = (float)PID_increase(&PidI_R,2000);
+   19   1              SpeedOut_L = (float)PID_increase(&PidI_L,30);
+   20   1              SpeedOut_R = (float)PID_increase(&PidI_R,30);
    21   1      //      PidI_L.last_out = SpeedOut_L;
    22   1      //      PidI_R.last_out = SpeedOut_R;
    23   1              Motor_Ctrl();
-   24   1              //Beep_bee();
-   25   1      }
-   26          void Pid_Ctrl(void)
-   27          {
-   28   1              
-   29   1              Pid_Dir.real = LNow[BL1]-LNow[BR1];
-   30   1              //Dir_real=LNow[BL1]-LNow[BR1];
-   31   1              if(Pid_Dir.real<30) Pid_Dir.real=0;
-   32   1              PID_position(&Pid_Dir,0);
-   33   1              Dir_out=limit(Pid_Dir.out,1500);
-   34   1              PID_increase(&PidI_L,-Dir_real);
-   35   1              PID_increase(&PidI_R,Dir_real);
-   36   1          PidI_L.last_out=limit(PidI_L.last_out,2000)+1000;
-   37   1              PidI_R.last_out=limit(PidI_R.last_out,2000)+1000;       
-   38   1              Motor_Ctrl();
-   39   1      ////    Pid_Dir.real = LNow[BL1]-LNow[BR1];
-   40   1      //////  PID_position(&PidP_Angle,0);
-   41   1      //////  //PID_position(&Pid_Dir,0);
-   42   1      ////    PID_position(&Pid_Dir,0);
-   43   1      //out_dw = dircontrol(LNow[BR1]-LNow[BL1]);
-   44   1      ////    PID_increase(&PidI_L,1300+Pid_Dir.out); 
-   45   1      ////    PID_increase(&PidI_R,1300-Pid_Dir.out);//串级pid
-   46   1      ////    
-   47   1      ////    out_L = PidI_L.last_out - Pid_Dir.out;
-   48   1      ////    out_R = PidI_R.last_out - Pid_Dir.out;
-   49   1      //      PidI_L.last_out = (int16)PID_increase(&PidI_L,myabs(out_dw)); 
-   50   1      //      PidI_R.last_out = (int16)PID_increase(&PidI_R,myabs(out_dw));
-   51   1      //      PidI_L.last_out=limit(PidI_L.last_out,2000);
-   52   1      //      PidI_R.last_out=limit(PidI_R.last_out,2000);       //240306
-   53   1      ////    
-   54   1      ////    PidI_L.last_out=limit(PidI_L.last_out,2000);
-   55   1      ////    PidI_R.last_out=limit(PidI_R.last_out,2000);
-   56   1      
-   57   1      ////    Motor_set_PWM();
-C251 COMPILER V5.60.0,  Control                                                            13/03/24  22:43:59  PAGE 2   
+   24   1      }
+   25          void Pid_Ctrl(void)
+   26          {
+   27   1              
+   28   1              Pid_Dir.real = LNow[BL1]-LNow[BR1];
+   29   1              //Dir_real=LNow[BL1]-LNow[BR1];
+   30   1              if(Pid_Dir.real<30) Pid_Dir.real=0;
+   31   1              PID_position(&Pid_Dir,0);
+   32   1              Dir_out=limit(Pid_Dir.out,1500);
+   33   1              PID_increase(&PidI_L,-Dir_real);
+   34   1              PID_increase(&PidI_R,Dir_real);
+   35   1          PidI_L.last_out=limit(PidI_L.last_out,2000)+1000;
+   36   1              PidI_R.last_out=limit(PidI_R.last_out,2000)+1000;       
+   37   1              Motor_Ctrl();
+   38   1      ////    Pid_Dir.real = LNow[BL1]-LNow[BR1];
+   39   1      //////  PID_position(&PidP_Angle,0);
+   40   1      //////  //PID_position(&Pid_Dir,0);
+   41   1      ////    PID_position(&Pid_Dir,0);
+   42   1      //out_dw = dircontrol(LNow[BR1]-LNow[BL1]);
+   43   1      ////    PID_increase(&PidI_L,1300+Pid_Dir.out); 
+   44   1      ////    PID_increase(&PidI_R,1300-Pid_Dir.out);//串级pid
+   45   1      ////    
+   46   1      ////    out_L = PidI_L.last_out - Pid_Dir.out;
+   47   1      ////    out_R = PidI_R.last_out - Pid_Dir.out;
+   48   1      //      PidI_L.last_out = (int16)PID_increase(&PidI_L,myabs(out_dw)); 
+   49   1      //      PidI_R.last_out = (int16)PID_increase(&PidI_R,myabs(out_dw));
+   50   1      //      PidI_L.last_out=limit(PidI_L.last_out,2000);
+   51   1      //      PidI_R.last_out=limit(PidI_R.last_out,2000);       //240306
+   52   1      ////    
+   53   1      ////    PidI_L.last_out=limit(PidI_L.last_out,2000);
+   54   1      ////    PidI_R.last_out=limit(PidI_R.last_out,2000);
+   55   1      
+   56   1      ////    Motor_set_PWM();
+   57   1      ////    if(Pid_Dir.out)
+C251 COMPILER V5.60.0,  Control                                                            15/03/24  17:56:26  PAGE 2   
 
-   58   1      ////    if(Pid_Dir.out)
-   59   1      ////    {
-   60   1      ////            Beep_bee();
-   61   1      ////    }
-   62   1      ////    else ;
-   63   1      ////PID_increase(&PidI_L,LNow[BR1]/10); 
-   64   1      ////PID_increase(&PidI_R,LNow[BL1]/10); 
-   65   1      ////B11_sum=LNow[BR1]+LNow[BL1];
-   66   1      ////B11_errRL=LNow[BR1]-LNow[BL1];
-   67   1      ////B11_errLR=LNow[BL1]-LNow[BR1];
-   68   1      ////PidI_L.last_out=(uint32)(B11_errRL*100.0f/B11_sum);
-   69   1      ////PidI_R.last_out=(uint32)(B11_errLR*100.0f/B11_sum);
-   70   1      ////PID_increase(&PidI_L,myabs(Pid_Dir.out)); 
-   71   1      ////PID_increase(&PidI_R,myabs(Pid_Dir.out));//串级pid
-   72   1      ////PidI_L.last_out=limit(PidI_L.last_out,2000);
-   73   1      ////PidI_R.last_out=limit(PidI_R.last_out,2000);
-   74   1      //Motor_Ctrl();
-   75   1      ////Pid_Ctrl2();
-   76   1      
-   77   1      }
-   78          void Pid_Ctrl2(void)
-   79          {
-   80   1              My_center_mag(0);
-   81   1              out_dw = dircontrol(deviation);
-   82   1              //out_dw = limit(out_dw,30000);
-   83   1              PID_increase(&PidI_L,+myabs(out_dw));
-   84   1              PID_increase(&PidI_R,myabs(out_dw));
-   85   1              PidI_L.last_out=limit(PidI_L.last_out,2000)+800;
-   86   1              PidI_R.last_out=limit(PidI_R.last_out,2000)+800;
-   87   1      //      PidI_L.last_out=PidI_L.last_out+800;
-   88   1      //      PidI_R.last_out=PidI_R.last_out+800;            
-   89   1              Motor_Ctrl();
-   90   1              out_L = (int16)PID_increase(&PidI_L,out_dw);       
-   91   1              out_R = (int16)PID_increase(&PidI_R,out_dw);
-   92   1              dutyL = out_L - out_dw;
-   93   1              dutyR = out_R + out_dw; 
-   94   1              Motor_set_PWM();
-   95   1      }
-   96          ////=================================================================
-   97          ////方向环，驱动电机实现差速转弯
-   98          ////=================================================================
-   99          float dir_p =150;
-  100          float dir_i = 0;
-  101          float dir_d = 20;
-  102          int output;
-  103          int total_i;
-  104          int last_chazhi;
-  105          int dircontrol(int chazhi)
-  106          {
-  107   1              total_i+=chazhi;
-  108   1              output = (int)(chazhi*dir_p+dir_i*total_i+(chazhi-last_chazhi)*dir_d);
-  109   1              last_chazhi = chazhi;
-  110   1              return output;
-  111   1      }
-  112          void Motor_set_PWM(void)
-  113          {
-  114   1              PidI_R.last_out = dutyR;
-  115   1              PidI_L.last_out = dutyL;
-  116   1      }
+   58   1      ////    {
+   59   1      ////            Beep_bee();
+   60   1      ////    }
+   61   1      ////    else ;
+   62   1      ////PID_increase(&PidI_L,LNow[BR1]/10); 
+   63   1      ////PID_increase(&PidI_R,LNow[BL1]/10); 
+   64   1      ////B11_sum=LNow[BR1]+LNow[BL1];
+   65   1      ////B11_errRL=LNow[BR1]-LNow[BL1];
+   66   1      ////B11_errLR=LNow[BL1]-LNow[BR1];
+   67   1      ////PidI_L.last_out=(uint32)(B11_errRL*100.0f/B11_sum);
+   68   1      ////PidI_R.last_out=(uint32)(B11_errLR*100.0f/B11_sum);
+   69   1      ////PID_increase(&PidI_L,myabs(Pid_Dir.out)); 
+   70   1      ////PID_increase(&PidI_R,myabs(Pid_Dir.out));//串级pid
+   71   1      ////PidI_L.last_out=limit(PidI_L.last_out,2000);
+   72   1      ////PidI_R.last_out=limit(PidI_R.last_out,2000);
+   73   1      //Motor_Ctrl();
+   74   1      ////Pid_Ctrl2();
+   75   1      
+   76   1      }
+   77          void Pid_Ctrl2(void)
+   78          {
+   79   1              My_center_mag(0);
+   80   1              out_dw = dircontrol(deviation);
+   81   1              //out_dw = limit(out_dw,30000);
+   82   1              PID_increase(&PidI_L,+myabs(out_dw));
+   83   1              PID_increase(&PidI_R,myabs(out_dw));
+   84   1              PidI_L.last_out=limit(PidI_L.last_out,2000)+800;
+   85   1              PidI_R.last_out=limit(PidI_R.last_out,2000)+800;
+   86   1      //      PidI_L.last_out=PidI_L.last_out+800;
+   87   1      //      PidI_R.last_out=PidI_R.last_out+800;            
+   88   1              Motor_Ctrl();
+   89   1              out_L = (int16)PID_increase(&PidI_L,out_dw);       
+   90   1              out_R = (int16)PID_increase(&PidI_R,out_dw);
+   91   1              dutyL = out_L - out_dw;
+   92   1              dutyR = out_R + out_dw; 
+   93   1              Motor_set_PWM();
+   94   1      }
+   95          void Pid_Ctrl3(void)
+   96          {
+   97   1              My_center_mag(0);
+   98   1              //out_dw = dircontrol(deviation);
+   99   1              Pid_Dir.real = deviation;
+  100   1              PID_position(&Pid_Dir,0);
+  101   1              //out_dw = limit(out_dw,30000);
+  102   1              PID_increase(&PidI_L,5000+Pid_Dir.out);
+  103   1              PID_increase(&PidI_R,5000-Pid_Dir.out);
+  104   1              PidI_L.last_out=limit(PidI_L.last_out,5000);
+  105   1              PidI_R.last_out=limit(PidI_R.last_out,5000);
+  106   1      //      PidI_L.last_out=PidI_L.last_out+800;
+  107   1      //      PidI_R.last_out=PidI_R.last_out+800;            
+  108   1              Motor_Ctrl();
+  109   1      //      out_L = (int16)PID_increase(&PidI_L,out_dw);       
+  110   1      //      out_R = (int16)PID_increase(&PidI_R,out_dw);
+  111   1      //      dutyL = out_L - out_dw;
+  112   1      //      dutyR = out_R + out_dw; 
+  113   1      //      Motor_set_PWM();
+  114   1      }
+  115          ////=================================================================
+  116          ////方向环，驱动电机实现差速转弯
+  117          ////=================================================================
+  118          float dir_p =150;
+  119          float dir_i = 0;
+  120          float dir_d = 20;
+  121          int output;
+  122          int total_i;
+  123          int last_chazhi;
+C251 COMPILER V5.60.0,  Control                                                            15/03/24  17:56:26  PAGE 3   
+
+  124          int dircontrol(int chazhi)
+  125          {
+  126   1              total_i+=chazhi;
+  127   1              output = (int)(chazhi*dir_p+dir_i*total_i+(chazhi-last_chazhi)*dir_d);
+  128   1              last_chazhi = chazhi;
+  129   1              return output;
+  130   1      }
+  131          void Motor_set_PWM(void)
+  132          {
+  133   1              PidI_R.last_out = dutyR;
+  134   1              PidI_L.last_out = dutyL;
+  135   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       765     ------
+  code size            =       971     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
-C251 COMPILER V5.60.0,  Control                                                            13/03/24  22:43:59  PAGE 3   
-
   pdata size           =    ------     ------
   xdata size           =    ------     ------
   xdata-const size     =    ------     ------

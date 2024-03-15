@@ -140,11 +140,7 @@ void TM1_Isr() interrupt 3
 }
 void TM2_Isr() interrupt 12
 {
-	InductorRead();
-	SimpleNorRead();
-	Encoder_speed();
-//	Pid_Ctrl();
-	Pid_Ctrl2();
+
 	TIM2_CLEAR_FLAG;  //清除中断标志
 	
 }
@@ -156,9 +152,16 @@ void TM3_Isr() interrupt 19
 
 void TM4_Isr() interrupt 20
 {
-	TIM4_CLEAR_FLAG; //清除中断标志
+	 
+	InductorRead();
+	SimpleNorRead();
+	Encoder_speed();
+//	Pid_Ctrl();
+//	Pid_Ctrl2();
+	Pid_Ctrl3();
+//	PidSpeed_Ctrl();
 //	ccd_collect();	 //CCD采集数据
-
+TIM4_CLEAR_FLAG;	//清除中断标志
 }
 
 //void  INT0_Isr()  interrupt 0;

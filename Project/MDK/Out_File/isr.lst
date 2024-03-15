@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  isr                                                                13/03/24  22:48:53  PAGE 1   
+C251 COMPILER V5.60.0,  isr                                                                15/03/24  17:31:15  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE isr
@@ -66,7 +66,7 @@ stmt  level    source
    53   2              UART2_CLEAR_TX_FLAG;
    54   2                      busy[2] = 0;
    55   2              }
-C251 COMPILER V5.60.0,  isr                                                                13/03/24  22:48:53  PAGE 2   
+C251 COMPILER V5.60.0,  isr                                                                15/03/24  17:31:15  PAGE 2   
 
    56   1          if(UART2_GET_RX_FLAG)
    57   1              {
@@ -134,7 +134,7 @@ stmt  level    source
   119          void INT2_Isr() interrupt 10
   120          {
   121   1              INT2_CLEAR_FLAG;  //清除中断标志
-C251 COMPILER V5.60.0,  isr                                                                13/03/24  22:48:53  PAGE 3   
+C251 COMPILER V5.60.0,  isr                                                                15/03/24  17:31:15  PAGE 3   
 
   122   1      }
   123          void INT3_Isr() interrupt 11
@@ -157,52 +157,55 @@ stmt  level    source
   140   1      }
   141          void TM2_Isr() interrupt 12
   142          {
-  143   1              InductorRead();
-  144   1              SimpleNorRead();
-  145   1              Encoder_speed();
-  146   1      //      Pid_Ctrl();
-  147   1              Pid_Ctrl2();
-  148   1              TIM2_CLEAR_FLAG;  //清除中断标志
-  149   1              
-  150   1      }
-  151          void TM3_Isr() interrupt 19
-  152          {
-  153   1              TIM3_CLEAR_FLAG; //清除中断标志
-  154   1              
-  155   1      }
-  156          
-  157          void TM4_Isr() interrupt 20
-  158          {
-  159   1              TIM4_CLEAR_FLAG; //清除中断标志
-  160   1      //      ccd_collect();   //CCD采集数据
-  161   1      
-  162   1      }
-  163          
-  164          //void  INT0_Isr()  interrupt 0;
-  165          //void  TM0_Isr()   interrupt 1;
-  166          //void  INT1_Isr()  interrupt 2;
-  167          //void  TM1_Isr()   interrupt 3;
-  168          //void  UART1_Isr() interrupt 4;
-  169          //void  ADC_Isr()   interrupt 5;
-  170          //void  LVD_Isr()   interrupt 6;
-  171          //void  PCA_Isr()   interrupt 7;
-  172          //void  UART2_Isr() interrupt 8;
-  173          //void  SPI_Isr()   interrupt 9;
-  174          //void  INT2_Isr()  interrupt 10;
-  175          //void  INT3_Isr()  interrupt 11;
-  176          //void  TM2_Isr()   interrupt 12;
-  177          //void  INT4_Isr()  interrupt 16;
-  178          //void  UART3_Isr() interrupt 17;
-  179          //void  UART4_Isr() interrupt 18;
-  180          //void  TM3_Isr()   interrupt 19;
-  181          //void  TM4_Isr()   interrupt 20;
-  182          //void  CMP_Isr()   interrupt 21;
-  183          //void  I2C_Isr()   interrupt 24;
-  184          //void  USB_Isr()   interrupt 25;
-  185          //void  PWM1_Isr()  interrupt 26;
-  186          //void  PWM2_Isr()  interrupt 27;
+  143   1      
+  144   1              TIM2_CLEAR_FLAG;  //清除中断标志
+  145   1              
+  146   1      }
+  147          void TM3_Isr() interrupt 19
+  148          {
+  149   1              TIM3_CLEAR_FLAG; //清除中断标志
+  150   1              
+  151   1      }
+  152          
+  153          void TM4_Isr() interrupt 20
+  154          {
+  155   1               
+  156   1              InductorRead();
+  157   1              SimpleNorRead();
+  158   1              Encoder_speed();
+  159   1      //      Pid_Ctrl();
+  160   1      //      Pid_Ctrl2();
+  161   1              Pid_Ctrl3();
+  162   1      //      PidSpeed_Ctrl();
+  163   1      //      ccd_collect();   //CCD采集数据
+  164   1      TIM4_CLEAR_FLAG;        //清除中断标志
+  165   1      }
+  166          
+  167          //void  INT0_Isr()  interrupt 0;
+  168          //void  TM0_Isr()   interrupt 1;
+  169          //void  INT1_Isr()  interrupt 2;
+  170          //void  TM1_Isr()   interrupt 3;
+  171          //void  UART1_Isr() interrupt 4;
+  172          //void  ADC_Isr()   interrupt 5;
+  173          //void  LVD_Isr()   interrupt 6;
+  174          //void  PCA_Isr()   interrupt 7;
+  175          //void  UART2_Isr() interrupt 8;
+  176          //void  SPI_Isr()   interrupt 9;
+  177          //void  INT2_Isr()  interrupt 10;
+  178          //void  INT3_Isr()  interrupt 11;
+  179          //void  TM2_Isr()   interrupt 12;
+  180          //void  INT4_Isr()  interrupt 16;
+  181          //void  UART3_Isr() interrupt 17;
+  182          //void  UART4_Isr() interrupt 18;
+  183          //void  TM3_Isr()   interrupt 19;
+  184          //void  TM4_Isr()   interrupt 20;
+  185          //void  CMP_Isr()   interrupt 21;
+  186          //void  I2C_Isr()   interrupt 24;
+  187          //void  USB_Isr()   interrupt 25;
+C251 COMPILER V5.60.0,  isr                                                                15/03/24  17:31:15  PAGE 4   
 
-C251 COMPILER V5.60.0,  isr                                                                13/03/24  22:48:53  PAGE 4   
+  188          //void  PWM1_Isr()  interrupt 26;
+  189          //void  PWM2_Isr()  interrupt 27;
 
 
 Module Information          Static   Overlayable

@@ -23,13 +23,13 @@
 extern uint16	edata LNow[7];//原始值
 extern uint16	edata LNor[7];//归一化的数值
 ////归一化零偏值
-
+extern uint16  edata ELC[ELC_GROUP][ELC_TIME][ELC_NUM];
 extern uint8 left_value;
 extern uint8 right_value;
 extern int16 ad_sum; 
 extern int16 ad_diff; 
 extern int16 deviation; 
-
+extern uint8 ElcProtect_Flag;		
 
 void My_center_mag(uint8 i);
 ////function

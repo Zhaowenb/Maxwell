@@ -130,14 +130,22 @@ void InductorRead(void)
 		{
 			//获取七路电感值
 			ELC[i][j][0] = adc_once(ADC_BL1,ADC_12BIT);//前排左边首个电感
+		
 			ELC[i][j][1] = adc_once(ADC_BL2,ADC_12BIT);//前排左边次个电感
+		
 			ELC[i][j][2] = adc_once(ADC_BL3,ADC_12BIT);//前排左边第三个电感
+			
 			ELC[i][j][3] = adc_once(ADC_BCTR,ADC_12BIT); //前排中间电感
+			
 			ELC[i][j][4] = adc_once(ADC_BR1,ADC_12BIT);//前排右边首个电感
+			
 			ELC[i][j][5] = adc_once(ADC_BR2,ADC_12BIT);//前排右边首个电感
+			
 			ELC[i][j][6] = adc_once(ADC_BR3,ADC_12BIT);//前排右边第三个电感
+		
 		}
 	}
+//	Beep_bee();
 	//冒泡排序 七路电感值
 	for(i = 0;i < ELC_GROUP;i ++)									 		//所有的组都需要排序
 	{

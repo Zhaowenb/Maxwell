@@ -7,11 +7,11 @@ PID_INC	 PidI_R;
 
 void	PID_ALL_Init(void)
 {
-	//PID_Pos_Init(&PidP_Angle,0,0,0);
-	//PID_Pos_Init(&Pid_Dir,0.6,0,0.75);
+//	PID_Pos_Init(&PidP_Angle,0,0,0);
+	PID_Pos_Init(&Pid_Dir,750,0,150);
 //	PID_Inc_Init(&Pid_Dir,5,1,5);
-	PID_Inc_Init(&PidI_L,1,0,0);
-	PID_Inc_Init(&PidI_R,1,0,0);
+	PID_Inc_Init(&PidI_L,1,0.3,0.4);
+	PID_Inc_Init(&PidI_R,1,0.3,0.4);
 }
 
 void 	PID_Pos_Init(PID_POS *PID,float p,float i,float d)

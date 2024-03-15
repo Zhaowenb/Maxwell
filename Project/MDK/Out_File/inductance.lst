@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  inductance                                                         13/03/24  22:12:28  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         15/03/24  17:31:17  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
@@ -66,7 +66,7 @@ stmt  level    source
    53          //////  uint8 i = 0;
    54          //////  vuint8 ClosedLoopMode_Temp = (uint8)CarInfo.ClosedLoopMode;
    55          //////  CarInfo.ClosedLoopMode = NoLoop;
-C251 COMPILER V5.60.0,  inductance                                                         13/03/24  22:12:28  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         15/03/24  17:31:17  PAGE 2   
 
    56          //////  ips114_clear(YELLOW);
    57          //////  IPS114_PENCOLOR = RED;
@@ -134,7 +134,7 @@ stmt  level    source
   118          @note   无
   119          */
   120          void InductorRead(void)
-C251 COMPILER V5.60.0,  inductance                                                         13/03/24  22:12:28  PAGE 3   
+C251 COMPILER V5.60.0,  inductance                                                         15/03/24  17:31:17  PAGE 3   
 
   121          {
   122   1              uint16 L_sum[ELC_NUM] = {0,0,0,0,0,0,0};
@@ -148,135 +148,143 @@ stmt  level    source
   130   2                      {
   131   3                              //获取七路电感值
   132   3                              ELC[i][j][0] = adc_once(ADC_BL1,ADC_12BIT);//前排左边首个电感
-  133   3                              ELC[i][j][1] = adc_once(ADC_BL2,ADC_12BIT);//前排左边次个电感
-  134   3                              ELC[i][j][2] = adc_once(ADC_BL3,ADC_12BIT);//前排左边第三个电感
-  135   3                              ELC[i][j][3] = adc_once(ADC_BCTR,ADC_12BIT); //前排中间电感
-  136   3                              ELC[i][j][4] = adc_once(ADC_BR1,ADC_12BIT);//前排右边首个电感
-  137   3                              ELC[i][j][5] = adc_once(ADC_BR2,ADC_12BIT);//前排右边首个电感
-  138   3                              ELC[i][j][6] = adc_once(ADC_BR3,ADC_12BIT);//前排右边第三个电感
-  139   3                      }
-  140   2              }
-  141   1              //冒泡排序 七路电感值
-  142   1              for(i = 0;i < ELC_GROUP;i ++)                                                                                   //所有的组都需要排序
-  143   1              {
-  144   2                      for(k = 0;k < ELC_NUM;k ++)                                                                                     //每个电感号组内排序
-  145   2                      {
-  146   3                              len = ELC_TIME;
-  147   3                              while(len > 1)                                                                                                                          //排序到只剩下一个元素后不再进行排序
-  148   3                              {
-  149   4                                      L_max = 0;
-  150   4                                      L_max_index = 0;
-  151   4                                      for(j = 0;j < len;j ++)
-  152   4                                      {
-  153   5                                              if(ELC[i][j][k] > L_max)
-  154   5                                              {
-  155   6                                                      L_max = ELC[i][j][k];                                                                           //记录最大值
-  156   6                                                      L_max_index = j;                                                                                                //记录最大值下标
-  157   6                                              }
-  158   5                                      }
-  159   4                                      ELC[i][L_max_index][k] = ELC[i][len - 1][k];//交换数据
-  160   4                                      ELC[i][len - 1][k] = L_max;                                                                     //最大值后移
-  161   4                                      len --;
-  162   4                              }
-  163   3                              L_sum[k] += ELC[i][ELC_NEED][k];
-  164   3                      }
-  165   2              }
-  166   1              for(i = 0;i < ELC_NUM;i ++)
-  167   1              {
-  168   2                      LNow[i] = L_sum[i]/ELC_GROUP;
-  169   2              }
-  170   1      }
-  171          
-  172          /*
-  173          @brief  简单归一化
-  174          @param  void
-  175          @return void
-  176          @since  v0.1.0
-  177          @Sample usage: SimpleNorRead();
-  178          @note   输入为0，不会调用中间电感
-  179          */
-  180          void SimpleNorRead(void)
-  181          {
-  182   1              uint8 i=0;
-  183   1              for(i=0;i<ELC_NUM;i++)
-  184   1              {
-  185   2                      LNor[i] = (uint16)(((float)(LNow[i]-LNowMin[i] )* 100.0f)/(float)(LNowMax[i]-LNowMin[i]));
-  186   2              }
-C251 COMPILER V5.60.0,  inductance                                                         13/03/24  22:12:28  PAGE 4   
+  133   3                      
+  134   3                              ELC[i][j][1] = adc_once(ADC_BL2,ADC_12BIT);//前排左边次个电感
+  135   3                      
+  136   3                              ELC[i][j][2] = adc_once(ADC_BL3,ADC_12BIT);//前排左边第三个电感
+  137   3                              
+  138   3                              ELC[i][j][3] = adc_once(ADC_BCTR,ADC_12BIT); //前排中间电感
+  139   3                              
+  140   3                              ELC[i][j][4] = adc_once(ADC_BR1,ADC_12BIT);//前排右边首个电感
+  141   3                              
+  142   3                              ELC[i][j][5] = adc_once(ADC_BR2,ADC_12BIT);//前排右边首个电感
+  143   3                              
+  144   3                              ELC[i][j][6] = adc_once(ADC_BR3,ADC_12BIT);//前排右边第三个电感
+  145   3                      
+  146   3                      }
+  147   2              }
+  148   1      //      Beep_bee();
+  149   1              //冒泡排序 七路电感值
+  150   1              for(i = 0;i < ELC_GROUP;i ++)                                                                                   //所有的组都需要排序
+  151   1              {
+  152   2                      for(k = 0;k < ELC_NUM;k ++)                                                                                     //每个电感号组内排序
+  153   2                      {
+  154   3                              len = ELC_TIME;
+  155   3                              while(len > 1)                                                                                                                          //排序到只剩下一个元素后不再进行排序
+  156   3                              {
+  157   4                                      L_max = 0;
+  158   4                                      L_max_index = 0;
+  159   4                                      for(j = 0;j < len;j ++)
+  160   4                                      {
+  161   5                                              if(ELC[i][j][k] > L_max)
+  162   5                                              {
+  163   6                                                      L_max = ELC[i][j][k];                                                                           //记录最大值
+  164   6                                                      L_max_index = j;                                                                                                //记录最大值下标
+  165   6                                              }
+  166   5                                      }
+  167   4                                      ELC[i][L_max_index][k] = ELC[i][len - 1][k];//交换数据
+  168   4                                      ELC[i][len - 1][k] = L_max;                                                                     //最大值后移
+  169   4                                      len --;
+  170   4                              }
+  171   3                              L_sum[k] += ELC[i][ELC_NEED][k];
+  172   3                      }
+  173   2              }
+  174   1              for(i = 0;i < ELC_NUM;i ++)
+  175   1              {
+  176   2                      LNow[i] = L_sum[i]/ELC_GROUP;
+  177   2              }
+  178   1      }
+  179          
+  180          /*
+  181          @brief  简单归一化
+  182          @param  void
+  183          @return void
+  184          @since  v0.1.0
+  185          @Sample usage: SimpleNorRead();
+  186          @note   输入为0，不会调用中间电感
+C251 COMPILER V5.60.0,  inductance                                                         15/03/24  17:31:17  PAGE 4   
 
-  187   1      }
-  188          
-  189          
-  190          ///*
-  191          //@brief        中线计算,中线计算的方法有两种,一种是F00和B00相同,F11和B00相反,一种是F00和B00相反,F11和B00相同,中
+  187          */
+  188          void SimpleNorRead(void)
+  189          {
+  190   1              uint8 i=0;
+  191   1              for(i=0;i<ELC_NUM;i++)
+  192   1              {
+  193   2                      LNor[i] = (uint16)(((float)(LNow[i]-LNowMin[i] )* 100.0f)/(float)(LNowMax[i]-LNowMin[i]));
+  194   2              }
+  195   1      }
+  196          
+  197          
+  198          ///*
+  199          //@brief        中线计算,中线计算的方法有两种,一种是F00和B00相同,F11和B00相反,一种是F00和B00相反,F11和B00相同,中
              -线计算的方法有两种,一种是F00和B00相同,F11和B00相反,一种是F00和B00相反,F11和B00相同
-  192          //@param        void
-  193          //@return       void
-  194          //@since        v0.1.0
-  195          //@Sample usage: CenterCalculate();
-  196          //@note 无
-  197          //*/
-  198          //void CenterCalculate(void)
-  199          //{
-  200          //      
-  201          //}
-  202          //向量中线判断
-  203          void My_center_mag(uint8 i)
-  204          {
-  205   1      // 计算电感向量值
-  206   1              left_value  = limit_ab(sqrt(LNor[BL1]  * LNor[BL1]  + LNor[BL2] * LNor[BL2] ), 0, 100);
-  207   1              right_value = limit_ab(sqrt(LNor[BR1]* LNor[BR1] + LNor[BR2] * LNor[BR2]), 0, 100);
-  208   1              // 计算电感之和 
-  209   1              ad_sum= left_value + right_value;         
-  210   1              // 计算电感之差
-  211   1        ad_diff= (int16) left_value - right_value; 
-  212   1              if(ad_sum>20)                                           // 边界保护 
-  213   1              { 
-  214   2                      ElcProtect_Flag = 'T';
-  215   2                      if(i)
-  216   2      // 方法一 
-  217   2                              {
-  218   3                                      deviation = (ad_diff * 100) / (ad_sum + 1);             // 计算差比和数值 并放大一百倍 
-  219   3                              }
-  220   2      // 方法二 
-  221   2                      else deviation = (ad_diff << 7 ) / (ad_sum + 1);        // 计算差比和数值 并放大128倍 
-  222   2              } 
-  223   1              else
-  224   1              {
-  225   2                      ElcProtect_Flag = 'F';  
-  226   2              }
-  227   1      }                     
-  228          //差比和中线判别
-  229          /*
-  230          @brief  中线计算,中线计算的方法有两种,一种是F00和B00相同,F11和B00相反,一种是F00和B00相反,F11和B00相同,中线
+  200          //@param        void
+  201          //@return       void
+  202          //@since        v0.1.0
+  203          //@Sample usage: CenterCalculate();
+  204          //@note 无
+  205          //*/
+  206          //void CenterCalculate(void)
+  207          //{
+  208          //      
+  209          //}
+  210          //向量中线判断
+  211          void My_center_mag(uint8 i)
+  212          {
+  213   1      // 计算电感向量值
+  214   1              left_value  = limit_ab(sqrt(LNor[BL1]  * LNor[BL1]  + LNor[BL2] * LNor[BL2] ), 0, 100);
+  215   1              right_value = limit_ab(sqrt(LNor[BR1]* LNor[BR1] + LNor[BR2] * LNor[BR2]), 0, 100);
+  216   1              // 计算电感之和 
+  217   1              ad_sum= left_value + right_value;         
+  218   1              // 计算电感之差
+  219   1        ad_diff= (int16) left_value - right_value; 
+  220   1              if(ad_sum>20)                                           // 边界保护 
+  221   1              { 
+  222   2                      ElcProtect_Flag = 'T';
+  223   2                      if(i)
+  224   2      // 方法一 
+  225   2                              {
+  226   3                                      deviation = (ad_diff * 100) / (ad_sum + 1);             // 计算差比和数值 并放大一百倍 
+  227   3                              }
+  228   2      // 方法二 
+  229   2                      else deviation = (ad_diff << 7 ) / (ad_sum + 1);        // 计算差比和数值 并放大128倍 
+  230   2              } 
+  231   1              else
+  232   1              {
+  233   2                      ElcProtect_Flag = 'F';  
+  234   2              }
+  235   1      }                     
+  236          //差比和中线判别
+  237          /*
+  238          @brief  中线计算,中线计算的方法有两种,一种是F00和B00相同,F11和B00相反,一种是F00和B00相反,F11和B00相同,中线
              -计算的方法有两种,一种是F00和B00相同,F11和B00相反,一种是F00和B00相反,F11和B00相同
-  231          @param  void
-  232          @return void
-  233          @since  v0.1.0
-  234          @Sample usage: CenterCalculate();
-  235          @note   无
-  236          */
-  237          //void My_CenterCalculate(void)
-  238          //{
-  239          //      ELC_Sum_F00 = LNor[BR1] + LNor[BL1];                                                    //左右电感和
-  240          //      ELC_Sum_F11 = LNor[BR2] + LNor[BL2];                                                    //中间两电感和
-  241          //      ELC_Sum_F0110 = ELC_Sum_F00 + ELC_Sum_F11;                              //F00和F11电感和
-  242          //      ELC_Sum_FALL = ELC_Sum_F0110 + LNor[BCTR];                                      //F00和F11和FC电感和
-  243          //      //右减左差
-  244          //      ELC_Err_F00 = LNor[BL1] - LNor[BR1];                                                    //左右电感差
-  245          //      ELC_Err_F11 = LNor[BL2] - LNor[BR2];                                                    //中间两电感差
-  246          //      //跑出跑道判断
-  247          //      if(ELC_Sum_FALL <= 30)  ElcProtect_Flag = 'T';          //电感保护标志位，未超出跑道无需在意
-  248          //      else ElcProtect_Flag = 'F';                                                                                             //电感保护标志位，超出跑道自动停止
-  249          //      ELC_Center_F00 = (int16)((float)ELC_Err_F00 * 200.0f/((float)ELC_Sum_F00 + (float)LNor[BCTR]));
-  250          //      ELC_Center_F11 = (int16)((float)ELC_Err_F11 * 200.0f/((float)ELC_Sum_F11 + (float)LNor[BCTR]));       
-C251 COMPILER V5.60.0,  inductance                                                         13/03/24  22:12:28  PAGE 5   
+  239          @param  void
+  240          @return void
+  241          @since  v0.1.0
+  242          @Sample usage: CenterCalculate();
+  243          @note   无
+  244          */
+  245          //void My_CenterCalculate(void)
+  246          //{
+  247          //      ELC_Sum_F00 = LNor[BR1] + LNor[BL1];                                                    //左右电感和
+  248          //      ELC_Sum_F11 = LNor[BR2] + LNor[BL2];                                                    //中间两电感和
+  249          //      ELC_Sum_F0110 = ELC_Sum_F00 + ELC_Sum_F11;                              //F00和F11电感和
+  250          //      ELC_Sum_FALL = ELC_Sum_F0110 + LNor[BCTR];                                      //F00和F11和FC电感和
+C251 COMPILER V5.60.0,  inductance                                                         15/03/24  17:31:17  PAGE 5   
 
+  251          //      //右减左差
+  252          //      ELC_Err_F00 = LNor[BL1] - LNor[BR1];                                                    //左右电感差
+  253          //      ELC_Err_F11 = LNor[BL2] - LNor[BR2];                                                    //中间两电感差
+  254          //      //跑出跑道判断
+  255          //      if(ELC_Sum_FALL <= 30)  ElcProtect_Flag = 'T';          //电感保护标志位，未超出跑道无需在意
+  256          //      else ElcProtect_Flag = 'F';                                                                                             //电感保护标志位，超出跑道自动停止
+  257          //      ELC_Center_F00 = (int16)((float)ELC_Err_F00 * 200.0f/((float)ELC_Sum_F00 + (float)LNor[BCTR]));
+  258          //      ELC_Center_F11 = (int16)((float)ELC_Err_F11 * 200.0f/((float)ELC_Sum_F11 + (float)LNor[BCTR]));       
              -           
-  251          
-  252          //}
-  253          
-  254          
+  259          
+  260          //}
+  261          
+  262          
 
 
 Module Information          Static   Overlayable

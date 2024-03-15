@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  Pid                                                                13/03/24  22:33:29  PAGE 1   
+C251 COMPILER V5.60.0,  Pid                                                                15/03/24  17:58:08  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE Pid
@@ -18,11 +18,11 @@ stmt  level    source
     7          
     8          void    PID_ALL_Init(void)
     9          {
-   10   1              //PID_Pos_Init(&PidP_Angle,0,0,0);
-   11   1              //PID_Pos_Init(&Pid_Dir,0.6,0,0.75);
+   10   1      //      PID_Pos_Init(&PidP_Angle,0,0,0);
+   11   1              PID_Pos_Init(&Pid_Dir,750,0,150);
    12   1      //      PID_Inc_Init(&Pid_Dir,5,1,5);
-   13   1              PID_Inc_Init(&PidI_L,1,0,0);
-   14   1              PID_Inc_Init(&PidI_R,1,0,0);
+   13   1              PID_Inc_Init(&PidI_L,1,0.3,0.4);
+   14   1              PID_Inc_Init(&PidI_R,1,0.3,0.4);
    15   1      }
    16          
    17          void    PID_Pos_Init(PID_POS *PID,float p,float i,float d)
@@ -66,7 +66,7 @@ stmt  level    source
    55   1      }
    56          
    57          int16   PID_increase(PID_INC * PID,float t)
-C251 COMPILER V5.60.0,  Pid                                                                13/03/24  22:33:29  PAGE 2   
+C251 COMPILER V5.60.0,  Pid                                                                15/03/24  17:58:08  PAGE 2   
 
    58          {
    59   1                      PID->target = t;
@@ -82,7 +82,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1148     ------
+  code size            =      1203     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

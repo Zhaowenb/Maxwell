@@ -30,50 +30,27 @@
 
 void main()
 {
-			//float out_dw;
 	All_init();
-	// 此处编写用户代码(例如：外设初始化代码等)
-	
+//	PidI_L.Kp = 1;
+//	PidI_R.Kp = 1;
+//	PidI_L.Ki = 0.3;
+//	PidI_R.Ki = 0.3;
+//	PidI_L.Kd = 0.4;
+//	PidI_R.Kd = 0.4;
+//	adc_once(ADC_BL1,ADC_12BIT);
     while(1)
 	{
-		 // 此处编写需要循环执行的代码
 //		Key_Scan();
 //		Key_Screen();
-		//InductorRead();
-//		InductorRead();
-//		SimpleNorRead();
-//		SimpleNorRead();
-//		Encoder_speed();
-//		if(PidI_L.real!=0)
-//		{
-//			Beep_bee();
-//		}
-		//ips114_clear(YELLOW);
-		
-//	ips114_showfloat(0,0,PidI_L.last_out,5,0);
-//	ips114_showfloat(50,0,PidI_R.last_out,5,0);
-		
-//		ips114_showfloat(0,20,LNow[1],5,0);//左2电感
-//		ips114_showfloat(50,20,LNow[2],5,0);
-//		ips114_showfloat(140,20,LNow[3],5,0);//中间电感
-//		ips114_showfloat(0,70,LNow[4],5,0);//右1电感
-//		ips114_showfloat(50,70,LNow[5],5,0);//右2电感
-//		ips114_showfloat(140,70,LNow[6],5,0);
+		ips114_showfloat(100,0,left_value,5,0);
+		ips114_showfloat(140,0,right_value,5,0);
 
-//		PidSpeed_Ctrl();
-//		showData(PidI_L.last_out);
-//		showData(PidI_R.last_out);
-//		showTail();
-//		
-//		ips114_showfloat(100,0,left_value,5,0);
-//		ips114_showfloat(140,0,right_value,5,0);
-//		
 		ips114_showfloat(0,0,LNor[BCTR],5,0);
-		ips114_showfloat(0,20,LNor[BL1],5,0);//左2电感
+		ips114_showfloat(0,20,LNor[BL1],5,0);
 		ips114_showfloat(50,20,LNor[BL2],5,0);
-		ips114_showfloat(140,20,LNor[BL3],5,0);//中间电感
-		ips114_showfloat(0,70,LNor[BR1],5,0);//右1电感
-		ips114_showfloat(50,70,LNor[BR2],5,0);//右2电感
+		ips114_showfloat(140,20,LNor[BL3],5,0);
+		ips114_showfloat(0,70,LNor[BR1],5,0);
+		ips114_showfloat(50,70,LNor[BR2],5,0);
 		ips114_showfloat(140,70,LNor[BR3],5,0);
     }
 }

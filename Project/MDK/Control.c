@@ -16,12 +16,11 @@ int16   SpeedOut_R =  0;
 void PidSpeed_Ctrl(void)
 {
 	Encoder_speed();
-	SpeedOut_L = (float)PID_increase(&PidI_L,2000);
-	SpeedOut_R = (float)PID_increase(&PidI_R,2000);
+	SpeedOut_L = (float)PID_increase(&PidI_L,30);
+	SpeedOut_R = (float)PID_increase(&PidI_R,30);
 //	PidI_L.last_out = SpeedOut_L;
 //	PidI_R.last_out = SpeedOut_R;
 	Motor_Ctrl();
-	//Beep_bee();
 }
 void Pid_Ctrl(void)
 {
@@ -92,6 +91,26 @@ void Pid_Ctrl2(void)
 	dutyL = out_L - out_dw;
 	dutyR = out_R + out_dw;	
 	Motor_set_PWM();
+}
+void Pid_Ctrl3(void)
+{
+	My_center_mag(0);
+	//out_dw = dircontrol(deviation);
+	Pid_Dir.real = deviation;
+	PID_position(&Pid_Dir,0);
+	//out_dw = limit(out_dw,30000);
+	PID_increase(&PidI_L,5000+Pid_Dir.out);
+	PID_increase(&PidI_R,5000-Pid_Dir.out);
+	PidI_L.last_out=limit(PidI_L.last_out,5000);
+	PidI_R.last_out=limit(PidI_R.last_out,5000);
+//	PidI_L.last_out=PidI_L.last_out+800;
+//	PidI_R.last_out=PidI_R.last_out+800;		
+	Motor_Ctrl();
+//	out_L = (int16)PID_increase(&PidI_L,out_dw);       
+//	out_R = (int16)PID_increase(&PidI_R,out_dw);
+//	dutyL = out_L - out_dw;
+//	dutyR = out_R + out_dw;	
+//	Motor_set_PWM();
 }
 ////=================================================================
 ////方向环，驱动电机实现差速转弯

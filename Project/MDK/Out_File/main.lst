@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               13/03/24  22:48:53  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               15/03/24  17:31:15  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -43,61 +43,38 @@ stmt  level    source
    30          
    31          void main()
    32          {
-   33   1                              //float out_dw;
-   34   1              All_init();
-   35   1              // 此处编写用户代码(例如：外设初始化代码等)
-   36   1              
-   37   1          while(1)
-   38   1              {
-   39   2                       // 此处编写需要循环执行的代码
-   40   2      //              Key_Scan();
-   41   2      //              Key_Screen();
-   42   2                      //InductorRead();
-   43   2      //              InductorRead();
-   44   2      //              SimpleNorRead();
-   45   2      //              SimpleNorRead();
-   46   2      //              Encoder_speed();
-   47   2      //              if(PidI_L.real!=0)
-   48   2      //              {
-   49   2      //                      Beep_bee();
-   50   2      //              }
-   51   2                      //ips114_clear(YELLOW);
-   52   2                      
-   53   2      //      ips114_showfloat(0,0,PidI_L.last_out,5,0);
-   54   2      //      ips114_showfloat(50,0,PidI_R.last_out,5,0);
-   55   2                      
-C251 COMPILER V5.60.0,  main                                                               13/03/24  22:48:53  PAGE 2   
+   33   1              All_init();
+   34   1      //      PidI_L.Kp = 1;
+   35   1      //      PidI_R.Kp = 1;
+   36   1      //      PidI_L.Ki = 0.3;
+   37   1      //      PidI_R.Ki = 0.3;
+   38   1      //      PidI_L.Kd = 0.4;
+   39   1      //      PidI_R.Kd = 0.4;
+   40   1      //      adc_once(ADC_BL1,ADC_12BIT);
+   41   1          while(1)
+   42   1              {
+   43   2      //              Key_Scan();
+   44   2      //              Key_Screen();
+   45   2                      ips114_showfloat(100,0,left_value,5,0);
+   46   2                      ips114_showfloat(140,0,right_value,5,0);
+   47   2      
+   48   2                      ips114_showfloat(0,0,LNor[BCTR],5,0);
+   49   2                      ips114_showfloat(0,20,LNor[BL1],5,0);
+   50   2                      ips114_showfloat(50,20,LNor[BL2],5,0);
+   51   2                      ips114_showfloat(140,20,LNor[BL3],5,0);
+   52   2                      ips114_showfloat(0,70,LNor[BR1],5,0);
+   53   2                      ips114_showfloat(50,70,LNor[BR2],5,0);
+   54   2                      ips114_showfloat(140,70,LNor[BR3],5,0);
+   55   2          }
+C251 COMPILER V5.60.0,  main                                                               15/03/24  17:31:15  PAGE 2   
 
-   56   2      //              ips114_showfloat(0,20,LNow[1],5,0);//左2电感
-   57   2      //              ips114_showfloat(50,20,LNow[2],5,0);
-   58   2      //              ips114_showfloat(140,20,LNow[3],5,0);//中间电感
-   59   2      //              ips114_showfloat(0,70,LNow[4],5,0);//右1电感
-   60   2      //              ips114_showfloat(50,70,LNow[5],5,0);//右2电感
-   61   2      //              ips114_showfloat(140,70,LNow[6],5,0);
-   62   2      
-   63   2      //              PidSpeed_Ctrl();
-   64   2      //              showData(PidI_L.last_out);
-   65   2      //              showData(PidI_R.last_out);
-   66   2      //              showTail();
-   67   2      //              
-   68   2      //              ips114_showfloat(100,0,left_value,5,0);
-   69   2      //              ips114_showfloat(140,0,right_value,5,0);
-   70   2      //              
-   71   2                      ips114_showfloat(0,0,LNor[BCTR],5,0);
-   72   2                      ips114_showfloat(0,20,LNor[BL1],5,0);//左2电感
-   73   2                      ips114_showfloat(50,20,LNor[BL2],5,0);
-   74   2                      ips114_showfloat(140,20,LNor[BL3],5,0);//中间电感
-   75   2                      ips114_showfloat(0,70,LNor[BR1],5,0);//右1电感
-   76   2                      ips114_showfloat(50,70,LNor[BR2],5,0);//右2电感
-   77   2                      ips114_showfloat(140,70,LNor[BR3],5,0);
-   78   2          }
-   79   1      }
-   80          
+   56   1      }
+   57          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       251     ------
+  code size            =       319     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
